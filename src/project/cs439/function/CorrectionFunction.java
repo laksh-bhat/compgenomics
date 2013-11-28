@@ -267,6 +267,7 @@ public class CorrectionFunction implements Function {
     private static void guessMoreUntrustedQmers (final Map<String, Double> trustedQmers, double cutoff,
                                                  final double[][][] conditionalCounts)
     {
+        System.out.println("Debug: guessMoreUntrustedQmers ");
         for (Iterator<String> iterator = trustedQmers.keySet().iterator(); iterator.hasNext(); ) {
             final String qMer = iterator.next();
             double multiplicity = trustedQmers.get(qMer);
@@ -287,6 +288,7 @@ public class CorrectionFunction implements Function {
                                                                    final Map<String, Double> trustedQmers,
                                                                    int k)
     {
+        System.out.println("Debug: findUntrustedIntersections ");
         List<List<Integer>> untrustedRanges = new ArrayList<List<Integer>>(1);
         List<Integer> untrustedQmerRange = new ArrayList<Integer>();
         boolean isUntrustedRegionBegun = false;

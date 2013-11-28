@@ -33,6 +33,7 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
                                        final String read,
                                        final String qualities)
     {
+        System.out.println("Debug: started learnAndFilterErrors ");
         int i;
         for (i = 0; i + StatisticsState.k < read.length(); i++) {
             String kmer = read.substring(i, i + StatisticsState.k);
@@ -50,8 +51,10 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
         // Update counts for the rest of the read
         while (i < read.length()) {
             double quality = qualities.charAt(i) - 33;
-            if (quality > 2) updateConditionalQualityProbability(statisticsState, read, i, quality);
+            if (quality > 2) updateConditionalQualityProbability(statisticsState, read, i++, quality);
         }
+
+        System.out.println("Debug: finished learnAndFilterErrors ");
     }
 
     private void writeSequenceReadToDb (final StatisticsState statisticsState,
@@ -71,6 +74,7 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
                                                   final String qualities, final int i, final String kmer,
                                                   final double correctnessProbability)
     {
+        System.out.println("Debug: updateTrustedQmersAndStatistics");
         if (statisticsState.getBloomFilter().mightContain(kmer)) {
             double quality = qualities.charAt(i) - 33;
             if (quality > 2)
@@ -109,6 +113,7 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
                                                       final int ntIndex,
                                                       final double quality)
     {
+        System.out.println("Debug: updateConditionalQualityProbability");
         final char[] acgt = {'A', 'C', 'G', 'T'};
         final char positionalChar = read.charAt(ntIndex);
 
