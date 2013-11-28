@@ -35,7 +35,7 @@ public class ErrorCorrectorTopology {
                 .partitionBy(new Fields("read"))
                 .partitionPersist(new StatisticsState.StatisticsStateFactory(100000, 15, readLength),
                                   new Fields("rownum", "read", "quality"), new StatisticsUpdater())
-                .parallelismHint(8);
+                .parallelismHint(2);
 
 
         // Query the distributed histograms and aggregate.
@@ -46,7 +46,7 @@ public class ErrorCorrectorTopology {
                             new Fields("args"),
                             new statisticsQuery(), // Distributed Query for persistent state
                             new Fields("partialHistogram", "conditionalCounts", "positionalCounts"))
-                .parallelismHint(8)
+                .parallelismHint(2)
                 .project(new Fields("partialHistogram", "conditionalCounts", "positionalCounts"))
                 .aggregate(new Fields("partialHistogram", "conditionalCounts", "positionalCounts"),
                            new StatisticsReducer(), // Reduce statistics
@@ -55,7 +55,7 @@ public class ErrorCorrectorTopology {
                 .broadcast() // Broadcast statistics to all partitions
                 .each(new Fields("histogram", "conditionalCounts", "positionalCounts"), new CorrectionFunction(),
                       new Fields("result"))
-                .parallelismHint(8)
+                .parallelismHint(2)
         ;
 
 
@@ -83,13 +83,12 @@ public class ErrorCorrectorTopology {
 
     public static Config getStormConfig () {
         Config conf = new Config();
-        conf.setNumAckers(8);
-        conf.setNumWorkers(8);
-        conf.setMaxSpoutPending(16);
-        conf.put("topology.spout.max.batch.size", 50);
+        conf.setNumAckers(2);
+        conf.setNumWorkers(2);
+        conf.setMaxSpoutPending(2);
+        conf.put("topology.spout.max.batch.size", 10);
         conf.put("topology.trident.batch.emit.interval.millis", 500);
-        conf.put(Config.DRPC_SERVERS,
-                 Lists.newArrayList("qp-hd1", "qp-hd5", "qp-hd7", "qp-hd8", "qp-hd9", "qp-hd3", "qp-hd4"));
+        conf.put(Config.DRPC_SERVERS, Lists.newArrayList("qp-hd1"));
         conf.put(Config.STORM_CLUSTER_MODE, "distributed");
         //conf.put(Config.TOPOLOGY_MESSAGE_TIMEOUT_SECS, 300);
         return conf;
@@ -110,7 +109,7 @@ public class ErrorCorrectorTopology {
         while (!sequenceReader.isDone()) Thread.sleep(5000);
 
         DRPCClient client = new DRPCClient("localhost", 3772, 5000000);
-        String result = client.execute("EC", "");
+        String result = client.execute("EC", "Query");
         BufferedWriter writer = new BufferedWriter(new FileWriter("results.dat"));
         saveResults(writer, result);
         cleanup(client, writer);

@@ -44,7 +44,7 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
             // If we can't learn anything about these kmers, just discard them.
             if (averageQuality < 3)
                 continue;
-
+	    
             updateTrustedQmersAndStatistics(statisticsState, read, qualities, i, kmer, correctnessProbability);
         }
         // Update counts for the rest of the read
@@ -100,6 +100,7 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
         row.put("rownum", rowNum);
         row.put("seqread", read);
         row.put("phred", qualities);
+	row.put("corrected", "");
         StatisticsState.insert(stats.getJdbcConnection(), row, StatisticsState.TABLE_NAME);
     }
 

@@ -79,7 +79,7 @@ public class SequenceReadStreamingSpout implements IRichSpout {
             i++;
         }
         if (fastQ[0] != null && fastQ[1] != null) {
-            _collector.emit(new Values(rowCount++, fastQ));
+            _collector.emit(new Values(rowCount++, fastQ[0], fastQ[1]));
         } else { done = true; }
     }
 

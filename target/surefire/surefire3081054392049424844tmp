@@ -1,0 +1,5 @@
+#surefire
+#Thu Nov 28 02:59:15 EST 2013
+user.dir=/damsl/software/storm/code/cs439/compgenomics
+localRepository=/root/.m2/repository
+basedir=/damsl/software/storm/code/cs439/compgenomics
