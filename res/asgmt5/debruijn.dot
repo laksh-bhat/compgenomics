@@ -1,0 +1,14 @@
+digraph G {
+  size ="4,4";
+  edge [color=red];
+  FG->GC[label="3"];
+  BC->CD[label="1"];
+  DH->HI[label="1"];
+  GC->CD[label="2"];
+  DE->EF[label="2"];
+  AB->BC[label="1"];
+  HI->IJ[label="1"];
+  CD->DH[label="2"];
+  EF->FG[label="3"];
+  CD->DE[label="2"];
+}

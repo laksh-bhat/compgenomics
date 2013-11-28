@@ -1,0 +1,52 @@
+EN 600.439/639: Computational Genomics : Homework 2 Answers
+
+1. 	(a) Traits are usually polygenic i.e affected by several genes or variants.
+	(b) The phenotype is not only influenced by the genotype; the environment also influences it. 
+	(c) Then there are mutations and errors in determining the genome which makes it hard to make definitive assertions about the traits.
+
+2.	(a) Transcription is a process whereby protein-coding stretches of DNA are transcribed into messenger RNA molecules.
+	(b) Translation is a process whereby messenger RNA are fed into the ribozome, which translates the RNA nucleic acid into protein amino acids.
+	(c) In simple words DNA molecules contain information about how to create proteins i.e. DNA makes RNA makes protein.
+	    DNA alphabet has 4 nucleic acids, whereas protein alphabet has ~20 amino acids. Hence a redundant code - triplet of nucleic acids code for an amino acid.
+	    Proteins are the workhorses which (loosely speaking) determine the traits or phenotype.
+
+3.  (a) 4
+    (b) adadadbcxadv
+    (c) Let string S = a$b, be the string consisting of string-a followed by the character $ - present neither in string-a or string-b - which is then followed by string-b.
+        Let us assume that |a| = n <= |m| (for brevity; its trivial to prove this for the case n > m). So, by definition S has a length |S| = m + n + 1.
+        Compute Z_i(S) for i = 2 to n+m+1.
+        case:
+        (1) Looking for a in b.
+        Since '$' doesn't appear in either a or b, Z_i <= n for every i > 1. Any value of i > n+1 such that Z_i(S) = n
+        identifies an occurrence of a in b.
+        (2) Just as in (1), for any i > n+1, if Z_i(S) > 0 constitutes a suffix of string-a that exactly matches a prefix of b.
+            The longest such suffix is string-a (for prefix string-b) itself as shown in (1).
+
+    (d) The pre-processing of S is linear in the size of a and b (1.4 Gusfield).
+        The main idea contributing to the linear time of the algorithm is to use the already computed Z values to accelerate the computation of Z_k's.
+        So, the algorithm computes all the Z_k's in a single pass (some Z_k's can be deduced directly from previous values of Z_j's; j<k. see 1.3 Gusfield.).
+        We can prove the correctness of the algorithm by induction on k. Hence, it runs in O(m + n).
+
+4.  (a) I'm not sure if this is a trick question, but there are several different reasons why there might be sequence differences between the read
+        and the reference genome at the read's point of origin, as we discussed in class.
+            1. Mutations, changes in nucleotide sequence (damages to DNA due to radiation or chemical mutagens) or errors in replication.
+            2. Transpositions, A phenomenon in which a segment of DNA independently replicates itself and inserts the copy into a new position within the same or another chromosome.
+            3. Genetic Recombination, occurring naturally, for example, by the pairing of homologous chromosomes in meiosis or by the breaking and rejoining of DNA strands, which forms new molecules of DNA.
+
+5.  (a) Image of light emitted color labelled nucleotides during a cycle of "sequencing by synthesis".
+    (b) There is uncertainty because of errors that occur when some templates get “out of sync”, by missing an incorporation or by incorporating 2 or more nucleotides at once.
+    (c) Larger fractions of the templates in the cluster fall out of sync as we go along and hence there is more uncertainty in later sequencing cycles.
+    (d) 1. medium or in-between, since most of the light emitted is of a particular color although intensity is a bit off.
+        2. high, no confusion here.
+        3. low, the sequencer can't possibly know which of the two colors to pick.
+
+6.  (a) Yes! The 67th nucleotide read (row 67) seems to have a quality score of < 20, 93% of the time!
+    (b) See res/graphs.pdf for the plots depicting the trends.
+
+        The number of quality values < 20 gradually increase after a quarter of the nucleotides are read within each read, spiking sharply at the 67th nucleotide.
+        After this the uncertainty in the read seems to increase causing the quality of sequence reads to decrease. Also note that the spike in the percentage of
+        "other character" reads coincides with the start of increasing error rates. This could be because some templates get “out of sync,” by missing an incorporation or
+        by incorporating 2 or more nucleotides at once. And, as seen in the graph (res/graphs.pdf), errors increase in the later sequencing cycles as proportionally more templates
+        fall out of sync.
+
+

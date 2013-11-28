@@ -1,0 +1,47 @@
+5.  (a) Yes. Since the characters are chosen at random from the alphabet, there are possibilities that the random
+    character is the same as the character in X.
+    (b) Yes. The case when all randomly chosen characters don't match X in the position.
+    (c) No, we are perturbing only n characters.
+
+6.  Property -- All the characters of T are unique. So, none of the suffixes share a branch out of the root node.
+    So, the tree contains |T| suffix nodes, a node for $ and the root node.
+
+7.  (a) find the graph at res/asgmt4/suffixtree.pdf
+    (b) SA = 7,3,4,6,5,0,1,2
+    (c) BWT = c,t,a,c,a,$,g,g
+
+8.  Base step:  n = 1. One initial call to edDistRecursive() is made with single character strings x and y.
+    3 more edDistRecursive() calls are made with 0-length strings to compute diag, vert, horz values.
+    So, 3^1 + 1 calls are made, which implies at least 3^n calls are made. So, the base case holds.
+
+    Inductive assumption: for some n = k, we assume that there are at least 3^k edDistRecursive() calls are made.
+
+    Inductive step: We need to prove that at least 3^(k+1) calls c are made for |x| = |y| = k+1.
+    To begin with, edDistRecursive() is called with k+1 length strings. It's clear that, to compute diag, vert and horz,
+    3 calls are made with length k strings.
+    From induction assumption, when n = k, c_k >= 3^k.
+    So, c >= 1 + 3 * c_k >= 1 + 3*3^k
+        c >= 3^(k+1)
+    Hence, the condition holds for n = k+1.
+
+9.  (a) The dynamic table cells with a value > k are redundant in terms of a problem with an edit distance threshold k.
+    It follows from the diagonal property that once D[i,j] > k, then the cells D[i + p, j + p], p >=0 are redundant
+    from that point on. So, one could device an algorithm to restrict the computation to a "band" around the diagonal
+    of the DP table.
+
+    Here's a gist of the Ukkonen's dynamic cut-off algorithm that achieves the same.
+    Let rUpper hold the row number of the upmost and rLower, the row number of the lowest cell that is deemed to have to be
+    filled in column j. Initially when j = 1, the boundary condition D[i,0] = i means that rUpper = 1 and rLower = k + 1.
+    At each column j, the cells D[i,j] arefilled for i = rUpper...rLower, and after this computation rUpper is set to
+    record the index of the upmost and rLower the index of the lowest row with a value k in the column. Finally both rUpper
+    and rLower should be incremented to reflect the fact that the cut-off actually restricts diagonals, not rows, and the
+    next cell along a diagonal is one row down. If rLower > rUpper, the region that needs to be filled vanishes, which
+    means that no more cells can have a value k.
+
+    (b) Solving the problem by hand for small strings made me realize that we need to compute that diagonal band of width
+    2k + 1. So, the total no. of cells that needs to be filled in is min(m,n) * (k+1).
+
+10. Although the length-8 substring "n_turn_t" spans all three "turn"s, it also spans 2 "turn"s and a "there" as in
+    "turn_turn_there". So, the greedy SCS algorithm incorrectly collapses and omits a "turn".
+    If we use length-9 substrings, "g_turn_tu", "n_turn_th" and "n_turn_tu" are different and with "n_turn_tu" spanning
+    all the "turns", we can resolve all the repeats.

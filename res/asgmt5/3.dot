@@ -1,0 +1,15 @@
+digraph G {
+  size ="4,4";
+  edge [color=red];
+  BF->FA[label="1"];
+  GA->AB[label="1"];
+  FA->AB[label="1"];
+  BA->AB[label="1"];
+  AB->BG[label="2"];
+  BG->GA[label="1"];
+  AB->BF[label="1"];
+  AB->BE[label="1"];
+  AB->BA[label="1"];
+  EA->AB[label="1"];
+  BE->EA[label="1"];
+}

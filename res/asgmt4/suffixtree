@@ -1,0 +1,32 @@
+
+ digraph G {
+ size ="4,4";
+ edge [color=red];
+ root -> g [label="g"];
+ root[label=""];
+ a[label=""];
+ g[label=""];
+ c[label=""];
+ t[label=""];
+ root -> a [label="a"];
+ root -> c [label="c"];
+ root -> t [label="t"];
+ root -> 8[label="$"]
+
+g->1[ label = "gtaacc$"];
+g->2[shape=box, label = "taacc$"];
+t->3[shape=box, label = "aacc$"];
+a->4[shape=box, label = "acc$"];
+a->5[shape=box, label = "cc$"];
+c->6[shape=box, label = "c$"];
+c->7[shape=box, label = "$"];
+8[shape=box];
+1[shape=box];
+2[shape=box];
+3[shape=box];
+4[shape=box];
+5[shape=box];
+6[shape=box];
+7[shape=box];
+
+ }

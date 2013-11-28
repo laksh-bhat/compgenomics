@@ -1,0 +1,17 @@
+2.  (a) Please find graph at res/asgmt5/debruijn.pdf
+    (b) The graph has 6 semi-balanced nodes (AB, CD, DH, IJ, EF, GC). By Theorem 8.2 - Jones & Pevzner, a directed, connected
+        graph is Eulerian if and only if it has at most 2 semi-balanced nodes and all other nodes are balanced. Moreover,
+        we don't even have one-long-read. Hence our graph can't be Eulerian.
+    (c) BCDH, GCDE
+
+3.  "ABFABGABABEABG". Find the graph at res/asgmt5/3.pdf. From the graph we have 4 ways ("ABA", "ABGA", "ABEA" "ABFA")
+    to traverse first loop, 3 ways for the second, 2 ways for the third and 1 way for the fourth. Hence 4!.
+
+4.  (a) During error correction we build the histogram of the multiplicities of k-mers and it will show a mixture of two
+    distributions - that of the error-free k-mers, and that of the erroneous k-mers. When the coverage is high and uniform,
+    these distributions are centered far apart and can be separated without much loss using a cutoff threshold; such
+    methods therefore achieve excellent results. In case of low coverage, it is highly likely that numerous errors aren't
+    corrected or some of the correct k-mers are lost due to high cut-off.
+
+    (b) Yes. Suppose there was a mutation in one's genome (a single nucleotide change) and one can hypothesize that a
+    sequencing error could potentially revert the k-mer back to an original and more frequent k-mer.

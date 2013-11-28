@@ -1,0 +1,175 @@
+\documentclass[11pt]{article}
+
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{url}
+\usepackage{wrapfig}
+\usepackage{color}
+\usepackage{marvosym}
+\usepackage{enumerate}
+\usepackage{subfigure}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref} 
+\usepackage{filecontents}
+\usepackage{cite}
+
+
+\oddsidemargin 0mm
+\evensidemargin 5mm
+\topmargin -20mm
+\textheight 240mm
+\textwidth 160mm
+
+\newcommand{\vw}{{\bf w}}
+\newcommand{\vx}{{\bf x}}
+\newcommand{\vy}{{\bf y}}
+\newcommand{\vxi}{{\bf x}_i}
+\newcommand{\yi}{y_i}
+\newcommand{\vxj}{{\bf x}_j}
+\newcommand{\vxn}{{\bf x}_n}
+\newcommand{\yj}{y_j}
+\newcommand{\ai}{\alpha_i}
+\newcommand{\aj}{\alpha_j}
+\newcommand{\X}{{\bf X}}
+\newcommand{\Y}{{\bf Y}}
+\newcommand{\vz}{{\bf z}}
+\newcommand{\msigma}{{\bf \Sigma}}
+\newcommand{\vmu}{{\bf \mu}}
+\newcommand{\vmuk}{{\bf \mu}_k}
+\newcommand{\msigmak}{{\bf \Sigma}_k}
+\newcommand{\vmuj}{{\bf \mu}_j}
+\newcommand{\msigmaj}{{\bf \Sigma}_j}
+\newcommand{\pij}{\pi_j}
+\newcommand{\pik}{\pi_k}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\el}{\mathcal{L}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\vxij}{{\bf x}_{ij}}
+\newcommand{\vt}{{\bf t}}
+\newcommand{\yh}{\hat{y}}
+\newcommand{\code}[1]{{\footnotesize \tt #1}}
+\newcommand{\alphai}{\alpha_i}
+
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\setbox0\hbox{$#1#2$}%
+\copy0\kern-\wd0\mkern4mu\box0}}
+
+
+
+
+
+\usepackage{filecontents}
+\begin{filecontents}{bibliography.bib}
+@article{quake,
+  title={Quake: quality-aware detection and correction of sequencing errors},
+  author={David R Kelley, Michael C Schatz, Steven L Salzberg},
+  journal={Genome Biology},
+  volume={11},
+  number={11},
+  pages={13},
+  year={2010}
+}
+
+@article{musket,
+  title={Musket: a multistage k-mer spectrum based error corrector for Illumina sequence data},
+  author={Yongchao Liu, Jan Schröder and Bertil Schmidt},
+  journal={BioInformatics},
+  year={2012},
+  publisher={Oxford University Press}
+}
+@article{parallel,
+  title={A parallel algorithm for error correction in high-throughput short-read data on CUDA-enabled graphics hardware},
+  author={Shi H, Schmidt B, Liu W, Müller-Wittig W.},
+  journal={Journal of Computational Biology},
+  volume={17},
+  number={4},
+  year={2010},
+  publisher={Mary Ann Liebert, Inc}
+}
+@article{bloom,
+  title={Space/time trade-offs in hash coding with allowable errors},
+  author={Burton H. Bloom},
+  journal={Communications of the ACM},
+  volume={13},
+  number={7},
+  pages={422--426},
+  year={1970},
+  publisher={ACM, New York}
+}
+
+@article{chikhi,
+  title={Informed and Automated k-Mer Size Selection for Genome Assembly},
+  author={Rayan Chikhi and Paul Medvedev},
+  journal={BioInformatics},
+  pages={1--7},
+  year={2013}
+}
+
+@article{reptile,
+  title={Reptile: representative tiling for short read error correction},
+  author={Xiao Yang, Karin S. Dorman and Srinivas Aluru},
+  journal={BioInformatics},
+  volume={26},
+  number={20},
+  pages={2526--2533},
+  year={2010}
+}
+
+@article{McGregor,
+  title={Homomorphic Fingerprints under Misalignments: Sketching Edit and Shift Distances},
+  author={Alexandr Andoni, Assaf Goldberger, Andrew McGregor, Ely Porat},
+  journal={STOC'13},
+  volume={26},
+  number={20},
+  pages={2526--2533},
+  year={2013},
+  publisher={ACM}
+}
+
+
+\end{filecontents}
+
+\pagestyle{myheadings} 
+\markboth{CS439}{Quality-Aware, Parallel, Multistage Detection and Correction of Sequencing Errors} 
+
+\title{Quality-Aware, Parallel, Multistage Detection and Correction of Sequencing Errors \\ Course Project for CS439 \\ Lakshmisha Bhat (lbhat1@jhu.edu), Johns Hopkins University}
+
+\begin{document}
+\large
+\date{}
+\maketitle
+\vspace{-.5in}
+
+\begin{abstract}
+The sequence data produced by next-generation sequencing technologies is error-prone and has motivated the development of a number of short-read error correctors in recent years. The majority of methods focus on the correction of substitution errors, which are the dominant error source in data produced by Illumina sequencing technology. We design a streaming algorithm that takes a stream of sequence reads, builds a distributed abundance histogram and use this information to detect which read nucleotides are likely to be sequencing errors, all within the Storm ecosystem. Then, using a maximum likelihood approach, we correct errors by incorporating quality values to achieve the highest accuracy on realistically simulated reads.\\
+\end{abstract}
+
+\section{Introduction}
+Massively parallel DNA sequencing has become a prominent tool in biological research [1,2]. The high-throughput and low cost of second-generation sequencing technologies has allowed researchers to address an ever-larger set of biological and biomedical problems. For example, the 1000 Genomes Project is using sequencing to discover all common variations in the human genome [3]. The Genome 10K Project plans to sequence and assemble the genomes of 10,000 vertebrate species [4]. Sequencing is now being applied to a wide variety of tumor samples in an effort to identify mutations associated with cancer [5,6]. Common to all of these projects is the paramount need to accurately sequence the sample DNA.
+
+DNA sequence reads from Illumina sequencers, one of the most successful of the second-generation technologies, range from 35 to 125 bp in length. Although sequence fidelity is high, the primary errors are substitution errors, at rates of 0.5-2.5 (as we show in our experiments), with errors rising in frequency at the 3' ends of reads. Sequencing errors complicate analysis, which normally requires that reads be aligned to each other (for genome assembly) or to a reference genome (for detection of mutations). Mistakes during the overlap computation in genome assembly are costly: missed overlaps may leave gaps in the assembly, while false overlaps may create ambiguous paths or improperly connect remote regions of the genome [7]. In genome re-sequencing projects, reads are aligned to a reference genome, usually allowing for a fixed number of mismatches due to either SNPs or sequencing errors [8]. In most cases, the reference genome and the genome being newly sequenced will differ, sometimes substantially. Variable regions are more difficult to align because mismatches from both polymorphisms and sequencing errors occur, but if errors can be eliminated, more reads will align and the sensitivity for variant detection will improve.
+
+Fortunately, the low cost of second-generation sequencing makes it possible to obtain highly redundant coverage of a genome, which can be used to correct sequencing errors in the reads before assembly or alignment. Various methods have been proposed to use this redundancy for error correction; for example, the EULER assembler [9] counts the number of appearances of each oligonucleotide of size k (hereafter referred to as k-mers) in the reads. For sufficiently large k, almost all single-base errors alter k-mers overlapping the error to versions that do not exist in the genome. Therefore, k-mers with low coverage, particularly those occurring just once or twice, usually represent sequencing errors. For the purpose of our discussion, we will refer to high coverage k-mers as trusted, because they are highly likely to occur in the genome, and low coverage k-mers as untrusted. Based on this principle, we can identify reads containing untrusted k-mers and either correct them so that all k-mers are trusted or simply discard them. The latest instance of EULER determines a coverage cutoff to separate low and high coverage k-mers using a mixture model of Poisson (low) and Gaussian (high) distributions, and corrects reads with low coverage k-mers by making nucleotide edits to the read that reduce the number of low coverage k-mers until all k-mers in the read have high coverage [10]. A number of related methods have been proposed to perform this error correction step, all guided by the goal of finding the minimum number of single base edits (edit distance) to the read that make all k-mers trusted [11-14].
+
+
+
+\section{Background}
+
+\section{Methods and Software}
+
+\section{Results}
+
+\section{Conclusions}
+
+\section{Advisors}
+\begin{itemize}
+	\item Ben Langmead (langmea@cs.jhu.edu)
+\end{itemize}
+
+
+\nocite{*}
+\bibliography{bibliography}
+\bibliographystyle{plain}
+\end{document}

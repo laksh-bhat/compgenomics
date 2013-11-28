@@ -1,0 +1,46 @@
+\begin{thebibliography}{1}
+
+\bibitem{McGregor}
+Andrew McGregor Ely~Porat Alexander~Andoni, Assaf~Goldberger.
+\newblock Homomorphic fingerprints under misalignments: Sketching edit and
+  shift distances.
+\newblock {\em STOC'13}, 2013.
+
+\bibitem{bloom}
+Burton~H. Bloom.
+\newblock Space/time trade-offs in hash coding with allowable errors.
+\newblock {\em Communications of the ACM}, 13(7):422--426, 1970.
+
+\bibitem{chikhi}
+Rayan Chikhi and Paul Medvedev.
+\newblock Informed and automated k-mer size selection for genome assembly.
+\newblock {\em BioInformatics}, pages 1--7, 2013.
+
+\bibitem{quake}
+Steven L~Salzberg David R~Kelley, Michael C~Schatz.
+\newblock Quake: quality-aware detection and correction of sequencing errors.
+\newblock {\em Genome Biology}, 11(11):13, 2010.
+
+\bibitem{debruijn}
+Waterman~MS. Idury~RM.
+\newblock A new algorithm for dna sequence assembly.
+\newblock {\em PubMed Central}, 2(2):291--306, 1995.
+
+\bibitem{parallel}
+Liu W Müller-Wittig~W. Shi~H, Schmidt~B.
+\newblock A parallel algorithm for error correction in high-throughput
+  short-read data on cuda-enabled graphics hardware.
+\newblock {\em Journal of Computational Biology}, 17(4), 2010.
+
+\bibitem{reptile}
+Karin S.~Dorman Xiao~Yang and Srinivas Aluru.
+\newblock Reptile: representative tiling for short read error correction.
+\newblock {\em BioInformatics}, 26(20):2526--2533, 2010.
+
+\bibitem{musket}
+Jan~Schröder Yongchao~Liu and Bertil Schmidt.
+\newblock Musket: a multistage k-mer spectrum based error corrector for
+  illumina sequence data.
+\newblock {\em BioInformatics}, 2012.
+
+\end{thebibliography}
