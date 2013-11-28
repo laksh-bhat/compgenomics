@@ -42,8 +42,10 @@ public class CorrectionFunction implements Function {
             resultSet = StatisticsState.getAll(dbConnection, StatisticsState.TABLE_NAME, startReadIndex, endReadIndex);
 
             while (resultSet.next()) {
+                int rowNum = resultSet.getInt("rownum");
                 CharSequence seqRead = resultSet.getString("seqread");
                 CharSequence qualities = resultSet.getString("phred");
+
                 List<List<Integer>> untrustedRegions = findUntrustedIntersections(seqRead, qualities, trustedQmers, StatisticsState.k);
                 for (List<Integer> region : untrustedRegions) {
                     int start = region.get(0), end = region.get(1);
@@ -53,9 +55,8 @@ public class CorrectionFunction implements Function {
                         seqRead = correctMultipleErrorsIfYouCan(conditionalProbs, trustedQmers, seqRead, start, end);
                     }
                 }
+                StatisticsState.updateCorrections(dbConnection, StatisticsState.TABLE_NAME, seqRead.toString(), rowNum);
             }
-
-
         } catch ( SQLException e ) {
             e.printStackTrace();
         } finally {
@@ -68,9 +69,17 @@ public class CorrectionFunction implements Function {
         }
     }
 
+    /**
+     * @param conditionalProbs
+     * @param trustedQmers
+     * @param seqRead
+     * @param start
+     * @param end
+     * @return
+     */
     private static CharSequence correctMultipleErrorsIfYouCan (final double[][][] conditionalProbs,
-                                                        final Map<String, Double> trustedQmers,
-                                                        CharSequence seqRead, final int start, final int end)
+                                                               final Map<String, Double> trustedQmers,
+                                                               CharSequence seqRead, final int start, final int end)
     {// exponential problem. 2 cases. region reaches the end of read or not.
         // Obs: In latter case, the last nucleotide of the last trusted k-mer must belong to trusted region
         if (end == seqRead.length()) {
@@ -85,11 +94,19 @@ public class CorrectionFunction implements Function {
         return seqRead;
     }
 
+    /**
+     * @param conditionalProbs
+     * @param trustedQmers
+     * @param seqRead
+     * @param start
+     * @param end
+     * @return
+     */
     private static StringBuilder correctMultipleErrorsStrictlyInsideRead (final double[][][] conditionalProbs,
-                                                                   final Map<String, Double> trustedQmers,
-                                                                   CharSequence seqRead,
-                                                                   final int start,
-                                                                   final int end)
+                                                                          final Map<String, Double> trustedQmers,
+                                                                          CharSequence seqRead,
+                                                                          final int start,
+                                                                          final int end)
     {   // continuously divide into k k-mer batches and correct the first nt of the last one in the batch
         int kRegionStart = start;
         while (kRegionStart + StatisticsState.k <= end) {
@@ -109,7 +126,6 @@ public class CorrectionFunction implements Function {
     }
 
     /**
-     *
      * @param conditionalProbs
      * @param trustedQmers
      * @param seqRead
@@ -164,7 +180,6 @@ public class CorrectionFunction implements Function {
     }
 
     /**
-     *
      * @param observedNucleotide
      * @param corrections
      * @param overlapRegion
@@ -196,7 +211,6 @@ public class CorrectionFunction implements Function {
     }
 
     /**
-     *
      * @param conditionalCounts
      * @param trustedQmers
      * @param seqRead
@@ -219,6 +233,14 @@ public class CorrectionFunction implements Function {
         return sb.toString();
     }
 
+    /**
+     * @param conditionalCounts
+     * @param trustedQmers
+     * @param seqRead
+     * @param start
+     * @param end
+     * @param corrections
+     */
     private static void searchNucleotideWithHighestLikelihood (final double[][][] conditionalCounts,
                                                                final Map<String, Double> trustedQmers,
                                                                final CharSequence seqRead,
@@ -237,7 +259,6 @@ public class CorrectionFunction implements Function {
     }
 
     /**
-     *
      * @param trustedQmers
      * @param cutoff
      * @param conditionalCounts
@@ -254,7 +275,6 @@ public class CorrectionFunction implements Function {
     }
 
     /**
-     *
      * @param seqRead
      * @param phred
      * @param trustedQmers
@@ -270,7 +290,7 @@ public class CorrectionFunction implements Function {
         List<Integer> untrustedQmerRange = new ArrayList<Integer>();
         boolean isUntrustedRegionBegun = false;
         for (int i = 0; i + k < seqRead.length(); i++) {
-            if ( getAverageQuality(phred.subSequence(i, i+k)) < 3)
+            if (getAverageQuality(phred.subSequence(i, i + k)) < 3)
                 continue;
 
             CharSequence qMer = seqRead.subSequence(i, i + k);

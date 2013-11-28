@@ -19,32 +19,38 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
     public void updateState (final StatisticsState statisticsState, final List<TridentTuple> tuples,
                              final TridentCollector collector)
     {
-        for (TridentTuple tuple : tuples) {
-            int rowNum = tuple.getIntegerByField("rownum");
-            String read = tuple.getStringByField("read");
-            String qualities = tuple.getStringByField("quality");
+        for (TridentTuple readStreamElement : tuples) {
+            int rowNum = readStreamElement.getIntegerByField("rownum");
+            String read = readStreamElement.getStringByField("read");
+            String qualities = readStreamElement.getStringByField("quality");
 
             writeSequenceReadToDb(statisticsState, rowNum, read, qualities);
+            learnAndFilterErrors(statisticsState, read, qualities);
+        }
+    }
 
-            int i;
-            for (i = 0; i + StatisticsState.k < read.length(); i++) {
-                String kmer = read.substring(i, i + StatisticsState.k);
-                String qmer = qualities.substring(i, i + StatisticsState.k);
-                double averageQuality = getAverageQuality(qmer);
-                double correctnessProbability = 1.0 - Math.pow(10.0, -0.1 * averageQuality);
+    private  static void learnAndFilterErrors (final StatisticsState statisticsState,
+                                       final String read,
+                                       final String qualities)
+    {
+        int i;
+        for (i = 0; i + StatisticsState.k < read.length(); i++) {
+            String kmer = read.substring(i, i + StatisticsState.k);
+            String qmer = qualities.substring(i, i + StatisticsState.k);
+            double averageQuality = getAverageQuality(qmer);
+            double correctnessProbability = 1.0 - Math.pow(10.0, -0.1 * averageQuality);
 
-                // confidence < 50%, this is a bit aggressive, but that's Ok.
-                // If we can't learn anything about these kmers, just discard them.
-                if (averageQuality < 3)
-                    continue;
+            // confidence < 50%, this is a bit aggressive, but that's Ok.
+            // If we can't learn anything about these kmers, just discard them.
+            if (averageQuality < 3)
+                continue;
 
-                updateTrustedQmersAndStatistics(statisticsState, read, qualities, i, kmer, correctnessProbability);
-            }
-            // Update counts for the rest of the read
-            while (i < read.length()) {
-                double quality = qualities.charAt(i) - 33;
-                if (quality > 2) updateConditionalQualityProbability(statisticsState, read, i, quality);
-            }
+            updateTrustedQmersAndStatistics(statisticsState, read, qualities, i, kmer, correctnessProbability);
+        }
+        // Update counts for the rest of the read
+        while (i < read.length()) {
+            double quality = qualities.charAt(i) - 33;
+            if (quality > 2) updateConditionalQualityProbability(statisticsState, read, i, quality);
         }
     }
 
@@ -61,7 +67,7 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
         }
     }
 
-    private void updateTrustedQmersAndStatistics (final StatisticsState statisticsState, final String read,
+    private static  void updateTrustedQmersAndStatistics (final StatisticsState statisticsState, final String read,
                                                   final String qualities, final int i, final String kmer,
                                                   final double correctnessProbability)
     {
@@ -97,7 +103,7 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
         StatisticsState.insert(stats.getJdbcConnection(), row, StatisticsState.TABLE_NAME);
     }
 
-    private void updateConditionalQualityProbability (final StatisticsState statisticsState,
+    private static void updateConditionalQualityProbability (final StatisticsState statisticsState,
                                                       final String read,
                                                       final int ntIndex,
                                                       final double quality)
@@ -130,7 +136,7 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
         }
     }
 
-    private double getAverageQuality (final CharSequence qmer) {
+    private static double getAverageQuality (final CharSequence qmer) {
         double averageQuality = 0D;
         for (int j = 0; j < qmer.length(); j++) {
             averageQuality += qmer.charAt(j) - 33;

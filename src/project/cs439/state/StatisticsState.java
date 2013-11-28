@@ -127,6 +127,17 @@ public class StatisticsState implements State, Serializable {
         return stmt.executeQuery(sql);
     }
 
+    public static void updateCorrections (final Connection jdbcConnection, String tableName, String correction, int rownum) throws
+    SQLException
+    {
+        Statement stmt = jdbcConnection.createStatement();
+        stmt.setFetchSize(100);
+        stmt.setQueryTimeout(0);
+        String sql = MessageFormat.format("UPDATE {0} SET CORRECTED = {1} WHERE ROWNUM = {2}", tableName, correction, rownum);
+        stmt.execute(sql);
+        stmt.close();
+    }
+
     public static void insert (final Connection jdbcConnection, Map<String, Object> row, String tableName) throws
     SQLException
     {
