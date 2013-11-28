@@ -85,9 +85,9 @@ public class ErrorCorrectorTopology {
         Config conf = new Config();
         conf.setNumAckers(2);
         conf.setNumWorkers(2);
-        conf.setMaxSpoutPending(2);
-        conf.put("topology.spout.max.batch.size", 10);
-        conf.put("topology.trident.batch.emit.interval.millis", 500);
+        conf.setMaxSpoutPending(1);
+        conf.put("topology.spout.max.batch.size", 2);
+        conf.put("topology.trident.batch.emit.interval.millis", 2000);
         conf.put(Config.DRPC_SERVERS, Lists.newArrayList("qp-hd1"));
         conf.put(Config.STORM_CLUSTER_MODE, "distributed");
         //conf.put(Config.TOPOLOGY_MESSAGE_TIMEOUT_SECS, 300);

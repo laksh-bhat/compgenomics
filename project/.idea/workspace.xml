@@ -79,14 +79,14 @@
     <file path="/ErrorModelQuery.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385197052528" ignored="false" />
     <file path="/PositionalCountsReducer.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385197972759" ignored="false" />
     <file path="/statisticsQuery.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385234066050" ignored="false" />
-    <file path="/StatisticsReducer.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385235193416" ignored="false" />
+    <file path="/StatisticsReducer.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385670744327" ignored="false" />
     <file path="/StatisticsUpdater.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385601970371" ignored="false" />
     <file path="/SynchronousSequenceReadSpout.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385333859935" ignored="false" />
     <file path="/CorrectErrors.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385323066762" ignored="false" />
     <file path="/AxFinderTransactional.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385347418474" ignored="false" />
     <file path="/AbundanceStatistics.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385361114104" ignored="false" />
-    <file path="/CorrectionFunction.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385618501198" ignored="false" />
-    <file path="/StatisticsState.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385618360422" ignored="false" />
+    <file path="/CorrectionFunction.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385670776087" ignored="false" />
+    <file path="/StatisticsState.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385670557651" ignored="false" />
     <file path="/Dummy.txt" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385514777852" ignored="false" />
     <file path="/TestCorrectors.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385540927306" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -184,7 +184,7 @@
       <file leaf-file-name="ErrorCorrectorTopology.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/project/cs439/topology/ErrorCorrectorTopology.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="108" column="56" selection-start="4739" selection-end="4739" vertical-scroll-proportion="0.0">
+            <state line="95" column="66" selection-start="4055" selection-end="4055" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -193,7 +193,7 @@
       <file leaf-file-name="StatisticsReducer.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/project/cs439/query/StatisticsReducer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="0" selection-start="458" selection-end="458" vertical-scroll-proportion="0.0">
+            <state line="34" column="53" selection-start="1316" selection-end="1316" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -202,14 +202,14 @@
       <file leaf-file-name="CorrectionFunction.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../src/project/cs439/function/CorrectionFunction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="55" column="66" selection-start="2909" selection-end="2909" vertical-scroll-proportion="0.68248177">
+            <state line="47" column="81" selection-start="2268" selection-end="2268" vertical-scroll-proportion="0.77554744">
               <folding>
-                <element signature="e#5813#5832#0" expanded="true" />
-                <element signature="e#7013#7032#0" expanded="true" />
-                <element signature="e#7094#7114#0" expanded="true" />
-                <element signature="e#11094#11113#0" expanded="true" />
-                <element signature="e#13843#13858#0" expanded="true" />
-                <element signature="e#13919#13928#0" expanded="true" />
+                <element signature="e#5874#5893#0" expanded="true" />
+                <element signature="e#7074#7093#0" expanded="true" />
+                <element signature="e#7155#7175#0" expanded="true" />
+                <element signature="e#11155#11174#0" expanded="true" />
+                <element signature="e#13904#13919#0" expanded="true" />
+                <element signature="e#13980#13989#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -227,7 +227,7 @@
       <file leaf-file-name="StatisticsState.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/project/cs439/state/StatisticsState.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="137" column="5" selection-start="5253" selection-end="5253" vertical-scroll-proportion="0.0">
+            <state line="113" column="71" selection-start="4377" selection-end="4377" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -236,7 +236,7 @@
       <file leaf-file-name="StatisticsUpdater.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/project/cs439/state/StatisticsUpdater.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="69" column="25" selection-start="2715" selection-end="2715" vertical-scroll-proportion="0.0">
+            <state line="9" column="48" selection-start="268" selection-end="268" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -257,16 +257,16 @@
         <option value="$PROJECT_DIR$/../src/project/cs439/query/statisticsQuery.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/state/HistogramUpdater.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/state/AbundanceHistogram.java" />
-        <option value="$PROJECT_DIR$/../src/project/cs439/query/StatisticsReducer.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/query/CorrectErrors.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/spout/SynchronousSequenceReadSpout.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/spout/SequenceReadStreamingSpout.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/state/AbundanceStatistics.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/state/ErrorModel.java" />
-        <option value="$PROJECT_DIR$/../src/project/cs439/topology/ErrorCorrectorTopology.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/test/TestCorrectors.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/state/StatisticsUpdater.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/state/StatisticsState.java" />
+        <option value="$PROJECT_DIR$/../src/project/cs439/topology/ErrorCorrectorTopology.java" />
+        <option value="$PROJECT_DIR$/../src/project/cs439/query/StatisticsReducer.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/function/CorrectionFunction.java" />
       </list>
     </option>
@@ -303,7 +303,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -379,6 +378,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -395,12 +395,12 @@
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="FullScreen" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
+    <property name="FullScreen" value="false" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="dynamic.classpath" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="dynamic.classpath" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -528,6 +528,19 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -553,19 +566,6 @@
       <envs />
       <properties />
       <listeners />
-      <method />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -791,23 +791,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../src/project/cs439/topology/ErrorCorrectorTopology.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="108" column="56" selection-start="4739" selection-end="4739" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../src/project/cs439/spout/SequenceReadStreamingSpout.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="98" column="25" selection-start="2574" selection-end="2574" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/project/cs439/query/StatisticsReducer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="0" selection-start="458" selection-end="458" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -819,30 +805,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../src/project/cs439/state/StatisticsUpdater.java">
+    <entry file="file://$PROJECT_DIR$/../src/project/cs439/topology/ErrorCorrectorTopology.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="69" column="25" selection-start="2715" selection-end="2715" vertical-scroll-proportion="0.0">
+        <state line="95" column="66" selection-start="4055" selection-end="4055" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../src/project/cs439/state/StatisticsState.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="137" column="5" selection-start="5253" selection-end="5253" vertical-scroll-proportion="0.0">
+        <state line="113" column="71" selection-start="4377" selection-end="4377" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/project/cs439/state/StatisticsUpdater.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="48" selection-start="268" selection-end="268" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/project/cs439/query/StatisticsReducer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="34" column="53" selection-start="1316" selection-end="1316" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../src/project/cs439/function/CorrectionFunction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="66" selection-start="2909" selection-end="2909" vertical-scroll-proportion="0.68248177">
+        <state line="47" column="81" selection-start="2268" selection-end="2268" vertical-scroll-proportion="0.77554744">
           <folding>
-            <element signature="e#5813#5832#0" expanded="true" />
-            <element signature="e#7013#7032#0" expanded="true" />
-            <element signature="e#7094#7114#0" expanded="true" />
-            <element signature="e#11094#11113#0" expanded="true" />
-            <element signature="e#13843#13858#0" expanded="true" />
-            <element signature="e#13919#13928#0" expanded="true" />
+            <element signature="e#5874#5893#0" expanded="true" />
+            <element signature="e#7074#7093#0" expanded="true" />
+            <element signature="e#7155#7175#0" expanded="true" />
+            <element signature="e#11155#11174#0" expanded="true" />
+            <element signature="e#13904#13919#0" expanded="true" />
+            <element signature="e#13980#13989#0" expanded="true" />
           </folding>
         </state>
       </provider>

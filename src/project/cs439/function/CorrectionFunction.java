@@ -22,6 +22,7 @@ public class CorrectionFunction implements Function {
 
     @Override
     public void execute (final TridentTuple tuple, final TridentCollector collector) {
+        System.out.println("Debug: Started correction... ");
         ResultSet resultSet = null;
         Connection dbConnection = null;
         //double[][] positionalCounts = (double[][]) tuple.getValueByField("positionalCounts");

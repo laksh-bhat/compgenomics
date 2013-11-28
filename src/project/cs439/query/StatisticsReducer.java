@@ -24,7 +24,15 @@ public class StatisticsReducer implements ReducerAggregator<List<Object>> {
         Hashtable<String, Double> incomingQmers = (Hashtable<String, Double>) objects.getValueByField("partialHistogram");
         double[][] positionalCounts = (double[][]) objects.getValueByField("positionalCounts");
         double[][][] positionalConditionalCounts = (double[][][]) objects.getValueByField("conditionalCounts");
+        doReduction(stats, incomingQmers, positionalCounts, positionalConditionalCounts);
+        return stats;
+    }
 
+    private void doReduction (final List<Object> stats,
+                              final Hashtable<String, Double> incomingQmers,
+                              final double[][] positionalCounts, final double[][][] positionalConditionalCounts)
+    {
+        System.out.println("Debug: Start reducing... ");
         if (stats.size() == 0) {
             stats.add(incomingQmers);
             stats.add(positionalConditionalCounts);
@@ -54,6 +62,5 @@ public class StatisticsReducer implements ReducerAggregator<List<Object>> {
                     reducedQmers.put(qmer, incomingQmers.get(qmer));
             }
         }
-        return stats;
     }
 }

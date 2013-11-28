@@ -100,7 +100,7 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
         row.put("rownum", rowNum);
         row.put("seqread", read);
         row.put("phred", qualities);
-	row.put("corrected", "");
+	    row.put("corrected", "");
         StatisticsState.insert(stats.getJdbcConnection(), row, StatisticsState.TABLE_NAME);
     }
 

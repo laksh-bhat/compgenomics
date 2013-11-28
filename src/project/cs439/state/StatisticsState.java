@@ -87,7 +87,7 @@ public class StatisticsState implements State, Serializable {
 
 
     public static int getMaxReadId (final Connection jdbcConnection, final String tableName) throws SQLException {
-	System.out.println("Debug: getMaxRead -- " + tableName);
+        System.out.println("Debug: getMaxRead -- " + tableName);
         Statement stmt = jdbcConnection.createStatement();
         String sql = MessageFormat.format("SELECT max(rownum) as count FROM {0}", tableName);
         ResultSet rs = stmt.executeQuery(sql);
@@ -103,7 +103,7 @@ public class StatisticsState implements State, Serializable {
     public static Map<String, Object> getAll (final Connection jdbcConnection, String tableName, int readId) throws
     SQLException
     {
-	System.out.println("Debug: getAll -- " + tableName);
+        System.out.println("Debug: getAll -- " + tableName);
         Statement stmt = jdbcConnection.createStatement();
         String sql = MessageFormat.format("SELECT * FROM {0} where rownum = {1}", tableName, readId);
         ResultSet rs = stmt.executeQuery(sql);
@@ -121,8 +121,8 @@ public class StatisticsState implements State, Serializable {
     public static ResultSet getAll (final Connection jdbcConnection, String tableName, int start, int end) throws
     SQLException
     {
-	
-	System.out.println("Debug: getAll -- " + tableName);
+
+        System.out.println("Debug: getAll -- " + tableName);
         Statement stmt = jdbcConnection.createStatement();
         stmt.setFetchSize(100);
         stmt.setQueryTimeout(0);
@@ -131,7 +131,10 @@ public class StatisticsState implements State, Serializable {
         return stmt.executeQuery(sql);
     }
 
-    public static void updateCorrections (final Connection jdbcConnection, String tableName, String correction, int rownum) throws
+    public static void updateCorrections (final Connection jdbcConnection,
+                                          String tableName,
+                                          String correction,
+                                          int rownum) throws
     SQLException
     {
         Statement stmt = jdbcConnection.createStatement();
@@ -145,10 +148,18 @@ public class StatisticsState implements State, Serializable {
     public static void insert (final Connection jdbcConnection, Map<String, Object> row, String tableName) throws
     SQLException
     {
-	System.out.println("Debug: insert -- " + row);
+        System.out.println("Debug: insert -- " + row);
         Statement stmt = jdbcConnection.createStatement();
         StringBuilder sql = new StringBuilder();
-        sql.append(MessageFormat.format("insert into {0} (rownum,seqread,phred,corrected) values (", tableName));
+        sql.append(MessageFormat.format("insert into {0} ( ", tableName));
+
+        for (Iterator<String> iterator = row.keySet().iterator(); iterator.hasNext(); ) {
+            final String column = iterator.next();
+            sql.append(column);
+            if (iterator.hasNext()) sql.append(", ");
+        }
+        sql.append(") values (");
+
         for (Iterator<String> iterator = row.keySet().iterator(); iterator.hasNext(); ) {
             final String key = iterator.next();
             sql.append("'").append(row.get(key)).append("'");
