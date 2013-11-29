@@ -52,7 +52,7 @@ public class StatisticsState implements State, Serializable {
         Statement stmt = connection.createStatement();
         if (stmt.execute(
                 MessageFormat.format(
-                        "create table if not exists {0}(rownum int, seqread varchar(200), phred varchar(200)) engine=innodb",
+                        "create table if not exists {0}(rownum int, seqread varchar(200), phred varchar(200), corrected varchar(200)) engine=innodb",
                         TABLE_NAME))) {
             stmt.execute(
                     MessageFormat.format(" ALTER TABLE {0} add index(seqread), add unique index(rownum)", TABLE_NAME));
@@ -140,6 +140,7 @@ public class StatisticsState implements State, Serializable {
         Statement stmt = jdbcConnection.createStatement();
         stmt.setFetchSize(100);
         stmt.setQueryTimeout(0);
+	correction = "'" + correction + "'";
         String sql = MessageFormat.format("UPDATE {0} SET CORRECTED = {1} WHERE ROWNUM = {2}", tableName, correction, rownum);
         stmt.execute(sql);
         stmt.close();
@@ -211,11 +212,11 @@ public class StatisticsState implements State, Serializable {
 
     @Override
     public void commit (final Long aLong) {
-        try {
+        /*try {
             jdbcConnection.commit();
         } catch ( SQLException e ) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override

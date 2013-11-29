@@ -33,7 +33,7 @@ public class ErrorCorrectorTopology {
         // In this state we save the histogram
         TridentState qMerStatistics = sequenceStream
                 .partitionBy(new Fields("read"))
-                .partitionPersist(new StatisticsState.StatisticsStateFactory(100000, 15, readLength),
+                .partitionPersist(new StatisticsState.StatisticsStateFactory(1000, 15, readLength),
                                   new Fields("rownum", "read", "quality"), new StatisticsUpdater())
                 .parallelismHint(2);
 
@@ -46,16 +46,17 @@ public class ErrorCorrectorTopology {
                             new Fields("args"),
                             new statisticsQuery(), // Distributed Query for persistent state
                             new Fields("partialHistogram", "conditionalCounts", "positionalCounts"))
-                .parallelismHint(2)
+                .parallelismHint(4)
                 .project(new Fields("partialHistogram", "conditionalCounts", "positionalCounts"))
                 .aggregate(new Fields("partialHistogram", "conditionalCounts", "positionalCounts"),
                            new StatisticsReducer(), // Reduce statistics
-                           new Fields("histogram", "conditionalCounts", "positionalCounts"))
-                .project(new Fields("histogram", "conditionalCounts", "positionalCounts"))
+                           new Fields("statistics"))
+                .project(new Fields("statistics"))
                 .broadcast() // Broadcast statistics to all partitions
-                .each(new Fields("histogram", "conditionalCounts", "positionalCounts"), new CorrectionFunction(),
+                .each(new Fields("statistics"), new CorrectionFunction(),
                       new Fields("result"))
-                .parallelismHint(2)
+                .parallelismHint(4)
+		.project(new Fields("result"))
         ;
 
 
@@ -83,11 +84,12 @@ public class ErrorCorrectorTopology {
 
     public static Config getStormConfig () {
         Config conf = new Config();
-        conf.setNumAckers(2);
-        conf.setNumWorkers(2);
-        conf.setMaxSpoutPending(1);
-        conf.put("topology.spout.max.batch.size", 2);
-        conf.put("topology.trident.batch.emit.interval.millis", 2000);
+	//conf.setDebug(true);
+        conf.setNumAckers(4);
+        conf.setNumWorkers(4);
+        conf.setMaxSpoutPending(500);
+        conf.put("topology.spout.max.batch.size", 50);
+        conf.put("topology.trident.batch.emit.interval.millis", 100);
         conf.put(Config.DRPC_SERVERS, Lists.newArrayList("qp-hd1"));
         conf.put(Config.STORM_CLUSTER_MODE, "distributed");
         //conf.put(Config.TOPOLOGY_MESSAGE_TIMEOUT_SECS, 300);
@@ -108,7 +110,7 @@ public class ErrorCorrectorTopology {
         // Let's wait until the entire file is processed
         while (!sequenceReader.isDone()) Thread.sleep(5000);
 
-        DRPCClient client = new DRPCClient("localhost", 3772, 5000000);
+        DRPCClient client = new DRPCClient("localhost", 3772, 500000);
         String result = client.execute("EC", "Query");
         BufferedWriter writer = new BufferedWriter(new FileWriter("results.dat"));
         saveResults(writer, result);

@@ -51,7 +51,8 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
         // Update counts for the rest of the read
         while (i < read.length()) {
             double quality = qualities.charAt(i) - 33;
-            if (quality > 2) updateConditionalQualityProbability(statisticsState, read, i++, quality);
+            if (quality > 2) updateConditionalQualityProbability(statisticsState, read, i, quality);
+	    i++;
         }
 
         System.out.println("Debug: finished learnAndFilterErrors ");
@@ -66,7 +67,8 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
             pushProcessedReadsToDB(rowNum, read, qualities, statisticsState);
         } catch ( SQLException e ) {
             e.printStackTrace();
-            System.exit(-1);
+            // streaming workers should never die. Bad programming practice.
+            //System.exit(-1);
         }
     }
 
@@ -74,7 +76,6 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
                                                   final String qualities, final int i, final String kmer,
                                                   final double correctnessProbability)
     {
-        System.out.println("Debug: updateTrustedQmersAndStatistics");
         if (statisticsState.getBloomFilter().mightContain(kmer)) {
             double quality = qualities.charAt(i) - 33;
             if (quality > 2)
@@ -103,7 +104,7 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
         Map<String, Object> row = new Hashtable<String, Object>();
         row.put("rownum", rowNum);
         row.put("seqread", read);
-        row.put("phred", qualities);
+        row.put("phred", qualities.replace("'", "''"));
 	    row.put("corrected", "");
         StatisticsState.insert(stats.getJdbcConnection(), row, StatisticsState.TABLE_NAME);
     }
@@ -113,7 +114,6 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
                                                       final int ntIndex,
                                                       final double quality)
     {
-        System.out.println("Debug: updateConditionalQualityProbability");
         final char[] acgt = {'A', 'C', 'G', 'T'};
         final char positionalChar = read.charAt(ntIndex);
 

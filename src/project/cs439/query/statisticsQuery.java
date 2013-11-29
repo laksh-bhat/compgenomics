@@ -30,6 +30,10 @@ public class statisticsQuery extends BaseQueryFunction<StatisticsState, List<Obj
 
     @Override
     public void execute (final TridentTuple objects, final List<Object> list, final TridentCollector collector) {
-        collector.emit(new Values(list));
+        System.out.println("Querying State -- List " + list);
+        if(list != null) 
+            collector.emit(new Values(list.get(0), list.get(1), list.get(2)));
+        else
+            collector.emit(new Values(null, null, null));
     }
 }

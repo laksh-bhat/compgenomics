@@ -62,10 +62,6 @@ public class SequenceReadStreamingSpout implements IRichSpout {
 
     @Override
     public void nextTuple () {
-        try {
-            Thread.sleep(1);
-        } catch ( InterruptedException ignore ) {}
-
         int i = 0;
         String[] fastQ = {null, null};
 

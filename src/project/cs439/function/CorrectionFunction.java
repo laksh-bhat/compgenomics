@@ -5,7 +5,7 @@ import storm.trident.operation.Function;
 import storm.trident.operation.TridentCollector;
 import storm.trident.operation.TridentOperationContext;
 import storm.trident.tuple.TridentTuple;
-
+import backtype.storm.tuple.Values;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,12 +23,18 @@ public class CorrectionFunction implements Function {
     @Override
     public void execute (final TridentTuple tuple, final TridentCollector collector) {
         System.out.println("Debug: Started correction... ");
-        ResultSet resultSet = null;
+        
+	ResultSet resultSet = null;
         Connection dbConnection = null;
-        //double[][] positionalCounts = (double[][]) tuple.getValueByField("positionalCounts");
-        // These are not real probabilities. We need to normalize them. But that's unnecessary for our purposes.
-        double[][][] conditionalProbs = (double[][][]) tuple.getValueByField("conditionalCounts");
-        Map<String, Double> trustedQmers = (Hashtable<String, Double>) tuple.getValueByField("histogram");
+        List<Object> statistics = (List<Object>) tuple.getValueByField("statistics");
+        Map<String, Double> trustedQmers = (Hashtable<String, Double>) statistics.get(0);
+	// These are not real probabilities. We need to normalize them. But that's unnecessary for our purposes.
+        double[][][] conditionalProbs = (double[][][]) statistics.get(1); 
+
+        if(conditionalProbs == null || trustedQmers == null){
+            collector.emit(new Values("nothing to return"));
+	    return;
+        }
 
         guessMoreUntrustedQmers(trustedQmers, 4, conditionalProbs);
 
@@ -264,18 +270,21 @@ public class CorrectionFunction implements Function {
      * @param cutoff
      * @param conditionalCounts
      */
-    private static void guessMoreUntrustedQmers (final Map<String, Double> trustedQmers, double cutoff,
-                                                 final double[][][] conditionalCounts)
-    {
-        System.out.println("Debug: guessMoreUntrustedQmers ");
-        for (Iterator<String> iterator = trustedQmers.keySet().iterator(); iterator.hasNext(); ) {
-            final String qMer = iterator.next();
-            double multiplicity = trustedQmers.get(qMer);
-            // TODO We need to reduce counts in our conditionalCounts 3-D array
-            if (multiplicity < cutoff) iterator.remove();
-        }
-    }
 
+     private static void guessMoreUntrustedQmers (final Map<String, Double> trustedQmers, double cutoff,
+                                                  final double[][][] conditionalCounts)
+     {
+        System.out.println("Debug: guessMoreUntrustedQmers ");
+        List<String> temp = new ArrayList<String>();
+        for (Map.Entry<String, Double> entry: trustedQmers.entrySet()){
+            double multiplicity = entry.getValue();
+            if (multiplicity < cutoff) temp.add(entry.getKey());
+        }
+        for (String key : temp)
+            trustedQmers.remove(key);
+        
+        temp.clear();
+     }
     /**
      * @param seqRead
      * @param phred
