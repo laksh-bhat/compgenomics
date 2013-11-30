@@ -23,8 +23,8 @@ public class StatisticsState implements State, Serializable {
         bloomFilter = create(Funnels.stringFunnel(), 100000, 0.001);
         trustedQmers = new Hashtable<String, Double>(100);
 
-        positionalQualityCounts = new double[100][4]; //P,O
-        positionalConditionalQualityCounts = new double[100][4][4]; // P,A,O
+        positionalQualityCounts = new double[100][5]; //P,O
+        positionalConditionalQualityCounts = new double[100][5][5]; // P,A,O
 
         jdbcConnection = getNewDatabaseConnection();
     }
@@ -34,8 +34,8 @@ public class StatisticsState implements State, Serializable {
         bloomFilter = create(Funnels.stringFunnel(), expectedNumberOfElements, 0.001);
         trustedQmers = new Hashtable<String, Double>(100);
 
-        positionalQualityCounts = new double[readLength][4]; //P,O
-        positionalConditionalQualityCounts = new double[readLength][4][4]; // P,A,O
+        positionalQualityCounts = new double[readLength][5]; //P,O
+        positionalConditionalQualityCounts = new double[readLength][5][5]; // P,A,O
 
         jdbcConnection = getNewDatabaseConnection();
     }
@@ -183,7 +183,7 @@ public class StatisticsState implements State, Serializable {
             case 'T':
                 return 3;
             default:
-                return -1;
+                return 4;
         }
     }
 

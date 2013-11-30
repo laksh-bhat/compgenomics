@@ -189,29 +189,29 @@ public class CorrectionFunction implements Function {
     /**
      * @param observedNucleotide
      * @param corrections
-     * @param overlapRegion
+     * @param correctedRegion
      * @param end
      * @param trustedQmers
      * @param conditionalProbabilities
      */
     private static void addToValidCorrectionsIfCertified (final char observedNucleotide,
                                                           final Map<Double, Character> corrections,
-                                                          final String overlapRegion,
+                                                          final String correctedRegion,
                                                           final int end,
                                                           final Map<String, Double> trustedQmers,
                                                           final double[][][] conditionalProbabilities)
     {
-        if (trustedQmers.containsKey(overlapRegion.substring(0, StatisticsState.k)) &&
+        if (trustedQmers.containsKey(correctedRegion.substring(0, StatisticsState.k)) &&
                 trustedQmers.containsKey(
-                        overlapRegion.substring(overlapRegion.length() - StatisticsState.k, overlapRegion.length()))) {
+                        correctedRegion.substring(correctedRegion.length() - StatisticsState.k, correctedRegion.length()))) {
             // compute likelihood and add to corrections map
             corrections.put
                     (
                             conditionalProbabilities
                                     [end]
-                                    [StatisticsState.getNucleotideIndex(overlapRegion.charAt(StatisticsState.k - 1))]
+                                    [StatisticsState.getNucleotideIndex(correctedRegion.charAt(StatisticsState.k - 1))]
                                     [StatisticsState.getNucleotideIndex(observedNucleotide)],
-                            overlapRegion.charAt(StatisticsState.k - 1)
+                            correctedRegion.charAt(StatisticsState.k - 1)
                     )
             ;
         }

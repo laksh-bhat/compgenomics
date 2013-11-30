@@ -29,9 +29,9 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
         }
     }
 
-    private  static void learnAndFilterErrors (final StatisticsState statisticsState,
-                                       final String read,
-                                       final String qualities)
+    private static void learnAndFilterErrors (final StatisticsState statisticsState,
+                                              final String read,
+                                              final String qualities)
     {
         System.out.println("Debug: started learnAndFilterErrors ");
         int i;
@@ -45,14 +45,14 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
             // If we can't learn anything about these kmers, just discard them.
             if (averageQuality < 3)
                 continue;
-	    
+
             updateTrustedQmersAndStatistics(statisticsState, read, qualities, i, kmer, correctnessProbability);
         }
         // Update counts for the rest of the read
         while (i < read.length()) {
             double quality = qualities.charAt(i) - 33;
             if (quality > 2) updateConditionalQualityProbability(statisticsState, read, i, quality);
-	    i++;
+            i++;
         }
 
         System.out.println("Debug: finished learnAndFilterErrors ");
@@ -72,9 +72,9 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
         }
     }
 
-    private static  void updateTrustedQmersAndStatistics (final StatisticsState statisticsState, final String read,
-                                                  final String qualities, final int i, final String kmer,
-                                                  final double correctnessProbability)
+    private static void updateTrustedQmersAndStatistics (final StatisticsState statisticsState, final String read,
+                                                         final String qualities, final int i, final String kmer,
+                                                         final double correctnessProbability)
     {
         if (statisticsState.getBloomFilter().mightContain(kmer)) {
             double quality = qualities.charAt(i) - 33;
@@ -105,41 +105,34 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
         row.put("rownum", rowNum);
         row.put("seqread", read);
         row.put("phred", qualities.replace("'", "''"));
-	    row.put("corrected", "");
+        row.put("corrected", "");
         StatisticsState.insert(stats.getJdbcConnection(), row, StatisticsState.TABLE_NAME);
     }
 
     private static void updateConditionalQualityProbability (final StatisticsState statisticsState,
-                                                      final String read,
-                                                      final int ntIndex,
-                                                      final double quality)
+                                                             final String read,
+                                                             final int ntIndex,
+                                                             final double quality)
     {
         final char[] acgt = {'A', 'C', 'G', 'T'};
         final char positionalChar = read.charAt(ntIndex);
+        double correctnessProbability = 1.0 - Math.pow(10.0, -0.1 * quality);
 
-        if (read.charAt(ntIndex) != 'N') {
-            double correctnessProbability = 1.0 - Math.pow(10.0, -0.1 * quality);
-            statisticsState.positionalConditionalQualityCounts[ntIndex]
-                    [StatisticsState.getNucleotideIndex(positionalChar)]
-                    [StatisticsState.getNucleotideIndex(positionalChar)] += Math.log(correctnessProbability);
-        /*statisticsState.positionalQualityCounts[ntIndex]
-                [statisticsState.getNucleotideIndex(positionalChar)] += correctnessProbability;*/
+        statisticsState.positionalConditionalQualityCounts[ntIndex]
+                [StatisticsState.getNucleotideIndex(positionalChar)]
+                [StatisticsState.getNucleotideIndex(positionalChar)] += Math.log(correctnessProbability);
+/*        statisticsState.positionalQualityCounts[ntIndex]
+                [StatisticsState.getNucleotideIndex(positionalChar)] += correctnessProbability;*/
 
-            for (char c : acgt)
-                if (positionalChar != c) {
-                    statisticsState.positionalConditionalQualityCounts[ntIndex]
-                            [StatisticsState.getNucleotideIndex(c)]
-                            [StatisticsState.getNucleotideIndex(positionalChar)] += Math.log(
-                            (1D - correctnessProbability) / 3D);  // GC content 50%, so divide the remaining prob among the other 3 bases
-                /*statisticsState.positionalQualityCounts[ntIndex]
-                        [statisticsState.getNucleotideIndex(c)] += (1.0 - correctnessProbability) / 3.0;*/
-                }
-        } else {
-            for (char c : acgt)
+        for (char c : acgt)
+            if (positionalChar != c) {
                 statisticsState.positionalConditionalQualityCounts[ntIndex]
                         [StatisticsState.getNucleotideIndex(c)]
-                        [StatisticsState.getNucleotideIndex(positionalChar)] += Math.log(1D / 4D);  // GC content 50% for E.Coli
-        }
+                        [StatisticsState.getNucleotideIndex(positionalChar)] += Math.log(
+                        (1D - correctnessProbability) / 3D);  // GC content 50%, so divide the remaining prob among the other 3 bases
+/*                statisticsState.positionalQualityCounts[ntIndex]
+                        [StatisticsState.getNucleotideIndex(c)] += (1.0 - correctnessProbability) / 3.0;*/
+            }
     }
 
     private static double getAverageQuality (final CharSequence qmer) {
