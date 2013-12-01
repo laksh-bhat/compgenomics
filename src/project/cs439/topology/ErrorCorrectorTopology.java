@@ -46,17 +46,18 @@ public class ErrorCorrectorTopology {
                             new Fields("args"),
                             new statisticsQuery(), // Distributed Query for persistent state
                             new Fields("partialHistogram", "conditionalCounts", "positionalCounts"))
-                .parallelismHint(8)
+                .parallelismHint(1)
                 .project(new Fields("partialHistogram", "conditionalCounts", "positionalCounts"))
                 .aggregate(new Fields("partialHistogram", "conditionalCounts", "positionalCounts"),
                            new StatisticsReducer(), // Reduce statistics
                            new Fields("statistics"))
                 .project(new Fields("statistics"))
+                .parallelismHint(2)
                 .broadcast() // Broadcast statistics to all partitions
+                .parallelismHint(32)
                 .each(new Fields("statistics"), new CorrectionFunction(),
                       new Fields("result"))
-                .parallelismHint(8)
-		.project(new Fields("result"))
+		        .project(new Fields("result"))
         ;
 
 
@@ -92,7 +93,10 @@ public class ErrorCorrectorTopology {
         conf.put("topology.trident.batch.emit.interval.millis", 1000);
         conf.put(Config.DRPC_SERVERS, Lists.newArrayList("qp-hd1"));
         conf.put(Config.STORM_CLUSTER_MODE, "distributed");
-        //conf.put(Config.TOPOLOGY_MESSAGE_TIMEOUT_SECS, 300);
+        conf.put(Config.NIMBUS_TASK_TIMEOUT_SECS, 180);
+        conf.put(Config.NIMBUS_SUPERVISOR_TIMEOUT_SECS, 180);
+        conf.put(Config.TOPOLOGY_MESSAGE_TIMEOUT_SECS, 30);
+
         return conf;
     }
 

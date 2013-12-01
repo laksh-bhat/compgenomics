@@ -21,11 +21,15 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
     {
         for (TridentTuple readStreamElement : tuples) {
             int rowNum = readStreamElement.getIntegerByField("rownum");
+            if (statisticsState.getSeenTuples().contains(rowNum))
+                continue;
+
             String read = readStreamElement.getStringByField("read");
             String qualities = readStreamElement.getStringByField("quality");
 
-            writeSequenceReadToDb(statisticsState, rowNum, read, qualities);
+            //writeSequenceReadToDb(statisticsState, rowNum, read, qualities);
             learnAndFilterErrors(statisticsState, read, qualities);
+            statisticsState.getSeenTuples().add(rowNum);
         }
         System.out.println("Debug: StatisticsUpdater: Finished Updating State for this Batch");
     }

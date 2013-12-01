@@ -9,10 +9,7 @@ import storm.trident.state.StateFactory;
 import java.io.Serializable;
 import java.sql.*;
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 import static com.google.common.hash.BloomFilter.create;
 
@@ -27,6 +24,7 @@ public class StatisticsState implements State, Serializable {
         positionalConditionalQualityCounts = new double[100][5][5]; // P,A,O
 
         jdbcConnection = getNewDatabaseConnection();
+        seenTuples = new HashSet<Integer>();
     }
 
     public StatisticsState (int expectedNumberOfElements, int k, int readLength) throws SQLException {
@@ -38,6 +36,7 @@ public class StatisticsState implements State, Serializable {
         positionalConditionalQualityCounts = new double[readLength][5][5]; // P,A,O
 
         jdbcConnection = getNewDatabaseConnection();
+        seenTuples = new HashSet<Integer>();
     }
 
     public static Connection getNewDatabaseConnection () throws SQLException {
@@ -221,6 +220,10 @@ public class StatisticsState implements State, Serializable {
         return jdbcConnection;
     }
 
+    public HashSet<Integer> getSeenTuples () {
+        return seenTuples;
+    }
+
     public static class StatisticsStateFactory implements StateFactory {
 
         private final int k, expectedNoOfElements, readLength;
@@ -257,6 +260,7 @@ public class StatisticsState implements State, Serializable {
     public        double[][][] positionalConditionalQualityCounts;
 
     private Connection                                       jdbcConnection;
+    private HashSet<Integer>                                 seenTuples;
     private Hashtable<String, Double>                        trustedQmers;
     private com.google.common.hash.BloomFilter<CharSequence> bloomFilter;
 

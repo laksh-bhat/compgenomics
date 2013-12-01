@@ -65,7 +65,7 @@
     <file path="$PROJECT_DIR$/../../BDConsistency/src/jvm/storm/bdconsistency/topology/finance/AxFinderTransactional.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385347433388" ignored="false" />
     <file path="/NonTransactionalFileStreamingSpout.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385102523360" ignored="false" />
     <file path="/BloomFilter.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385087095272" ignored="false" />
-    <file path="/ErrorCorrectorTopology.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385360244117" ignored="false" />
+    <file path="/ErrorCorrectorTopology.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385876354745" ignored="false" />
     <file path="/AbundanceHistogram.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385234849819" ignored="false" />
     <file path="/HistogramUpdater.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385334163226" ignored="false" />
     <file path="/Test.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385083802558" ignored="false" />
@@ -80,15 +80,17 @@
     <file path="/PositionalCountsReducer.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385197972759" ignored="false" />
     <file path="/statisticsQuery.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385868652997" ignored="false" />
     <file path="/StatisticsReducer.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385670744327" ignored="false" />
-    <file path="/StatisticsUpdater.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385868822978" ignored="false" />
+    <file path="/StatisticsUpdater.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385876847200" ignored="false" />
     <file path="/SynchronousSequenceReadSpout.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385333859935" ignored="false" />
     <file path="/CorrectErrors.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385323066762" ignored="false" />
     <file path="/AxFinderTransactional.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385347418474" ignored="false" />
     <file path="/AbundanceStatistics.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385361114104" ignored="false" />
     <file path="/CorrectionFunction.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385782551059" ignored="false" />
-    <file path="/StatisticsState.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385670557651" ignored="false" />
-    <file path="/Dummy.txt" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385514777852" ignored="false" />
+    <file path="/StatisticsState.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385876592528" ignored="false" />
+    <file path="/Dummy.txt" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385871595377" ignored="false" />
     <file path="/TestCorrectors.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385540927306" ignored="false" />
+    <file path="$PROJECT_DIR$/../../BDConsistency/src/jvm/storm/bdconsistency/utils/DrpcQueryRunner.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385875271033" ignored="false" />
+    <file path="/DrpcQueryRunner.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385875269538" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,7 +186,7 @@
       <file leaf-file-name="ErrorCorrectorTopology.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/project/cs439/topology/ErrorCorrectorTopology.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="55" column="62" selection-start="2624" selection-end="2624" vertical-scroll-proportion="0.0">
+            <state line="57" column="63" selection-start="2698" selection-end="2698" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -193,7 +195,7 @@
       <file leaf-file-name="statisticsQuery.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/project/cs439/query/statisticsQuery.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="84" selection-start="884" selection-end="884" vertical-scroll-proportion="0.0">
+            <state line="18" column="13" selection-start="399" selection-end="399" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -211,7 +213,7 @@
       <file leaf-file-name="CorrectionFunction.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/project/cs439/function/CorrectionFunction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="83" selection-start="1380" selection-end="1380" vertical-scroll-proportion="0.0">
+            <state line="34" column="62" selection-start="1286" selection-end="1286" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -229,7 +231,7 @@
       <file leaf-file-name="StatisticsState.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/project/cs439/state/StatisticsState.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="174" column="22" selection-start="6587" selection-end="6587" vertical-scroll-proportion="0.0">
+            <state line="262" column="68" selection-start="9075" selection-end="9075" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -238,7 +240,7 @@
       <file leaf-file-name="StatisticsUpdater.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../src/project/cs439/state/StatisticsUpdater.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="29" column="87" selection-start="1112" selection-end="1112" vertical-scroll-proportion="0.6060606">
+            <state line="29" column="64" selection-start="1027" selection-end="1027" vertical-scroll-proportion="0.5151515">
               <folding />
             </state>
           </provider>
@@ -264,11 +266,11 @@
         <option value="$PROJECT_DIR$/../src/project/cs439/state/AbundanceStatistics.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/state/ErrorModel.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/test/TestCorrectors.java" />
-        <option value="$PROJECT_DIR$/../src/project/cs439/topology/ErrorCorrectorTopology.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/query/StatisticsReducer.java" />
-        <option value="$PROJECT_DIR$/../src/project/cs439/state/StatisticsState.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/query/statisticsQuery.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/function/CorrectionFunction.java" />
+        <option value="$PROJECT_DIR$/../src/project/cs439/topology/ErrorCorrectorTopology.java" />
+        <option value="$PROJECT_DIR$/../src/project/cs439/state/StatisticsState.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/state/StatisticsUpdater.java" />
       </list>
     </option>
@@ -663,16 +665,16 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32367972" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14513677" sideWeight="0.67291313" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14513677" sideWeight="0.67632025" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43781942" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270869" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32367972" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -742,16 +744,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$PROJECT_DIR$/../lib/storm-0.8.3-wip3.jar!/storm/trident/Stream.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="32" selection-start="1325" selection-end="1325" vertical-scroll-proportion="0.34860557" />
-      </provider>
-    </entry>
-    <entry file="jar://Z:/Java/jdk1.7.0_40/src.zip!/java/sql/ResultSet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1350" column="9" selection-start="62656" selection-end="62656" vertical-scroll-proportion="0.6481481" />
-      </provider>
-    </entry>
     <entry file="jar://Z:/Java/jdk1.7.0_40/src.zip!/java/sql/Statement.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="209" column="8" selection-start="8799" selection-end="8799" vertical-scroll-proportion="0.6166667" />
@@ -788,30 +780,9 @@
         <state line="98" column="25" selection-start="2574" selection-end="2574" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../src/project/cs439/topology/ErrorCorrectorTopology.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="62" selection-start="2624" selection-end="2624" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/project/cs439/query/statisticsQuery.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="84" selection-start="884" selection-end="884" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../src/project/cs439/query/StatisticsReducer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="51" column="101" selection-start="2153" selection-end="2153" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/project/cs439/function/CorrectionFunction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="83" selection-start="1380" selection-end="1380" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -823,13 +794,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../src/project/cs439/state/StatisticsState.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="174" column="22" selection-start="6587" selection-end="6587" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/../lib/storm-0.8.3-wip3.jar!/storm/trident/state/BaseStateUpdater.class">
       <provider selected="true" editor-type-id="text-editor">
         <state line="6" column="22" selection-start="171" selection-end="171" vertical-scroll-proportion="-3.4">
@@ -837,9 +801,51 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$PROJECT_DIR$/../lib/storm-0.8.3-wip3.jar!/backtype/storm/Config.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="35" selection-start="1567" selection-end="1567" vertical-scroll-proportion="0.34860557">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/project/cs439/query/statisticsQuery.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="13" selection-start="399" selection-end="399" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../lib/storm-0.8.3-wip3.jar!/storm/trident/Stream.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="32" selection-start="588" selection-end="588" vertical-scroll-proportion="0.34860557">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/project/cs439/topology/ErrorCorrectorTopology.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="57" column="63" selection-start="2698" selection-end="2698" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/project/cs439/function/CorrectionFunction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="34" column="62" selection-start="1286" selection-end="1286" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/project/cs439/state/StatisticsState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="262" column="68" selection-start="9075" selection-end="9075" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../src/project/cs439/state/StatisticsUpdater.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="87" selection-start="1112" selection-end="1112" vertical-scroll-proportion="0.6060606">
+        <state line="29" column="64" selection-start="1027" selection-end="1027" vertical-scroll-proportion="0.5151515">
           <folding />
         </state>
       </provider>
