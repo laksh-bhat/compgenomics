@@ -1,13 +1,15 @@
 package project.cs439.state;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import storm.trident.operation.TridentCollector;
 import storm.trident.state.BaseStateUpdater;
 import storm.trident.tuple.TridentTuple;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
+import java.text.MessageFormat;
+import java.util.*;
 
 /**
  * User: lbhat@damsl
@@ -19,29 +21,29 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
     public void updateState (final StatisticsState statisticsState, final List<TridentTuple> tuples,
                              final TridentCollector collector)
     {
+        Hashtable<Integer, Pair<String, String>> dbPushMap = new Hashtable<Integer, Pair<String, String>>();
         for (TridentTuple readStreamElement : tuples) {
             int rowNum = readStreamElement.getIntegerByField("rownum");
-            if (statisticsState.getSeenTuples().contains(rowNum)){
-		System.out.println("Row already seen; throwing away read with Id - " + rowNum);
+            if (statisticsState.getSeenTuples().contains(rowNum))
                 continue;
-	    }
 
             String read = readStreamElement.getStringByField("read");
             String qualities = readStreamElement.getStringByField("quality");
 
-            //writeSequenceReadToDb(statisticsState, rowNum, read, qualities);
+            dbPushMap.put(rowNum, new ImmutablePair<String, String>(read, qualities));
             learnAndFilterErrors(statisticsState, read, qualities);
             statisticsState.getSeenTuples().add(rowNum);
         }
+        StatisticsState.saveBatchInDb(dbPushMap, statisticsState);
+        dbPushMap.clear();
         System.out.println("Debug: StatisticsUpdater: Finished Updating State for this Batch -- " + tuples.size());
     }
+
 
     private static void learnAndFilterErrors (final StatisticsState statisticsState,
                                               final String read,
                                               final String qualities)
     {
-	
-//        System.out.println("Debug:learnAndFilterErrors ");
         int i;
         for (i = 0; i + StatisticsState.k < read.length(); i++) {
             String kmer = read.substring(i, i + StatisticsState.k);

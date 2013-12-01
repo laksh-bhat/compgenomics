@@ -16,7 +16,7 @@ import java.util.Map;
  * Time: 1:46 AM
  */
 
-public class statisticsQuery extends BaseQueryFunction<StatisticsState, List<Object>> {
+public class StatisticsQuery extends BaseQueryFunction<StatisticsState, List<Object>> {
     @Override
     public List<List<Object>> batchRetrieve (final StatisticsState abundanceHistogram, final List<TridentTuple> tridentTuples) {
         List<List<Object>> listList = new ArrayList<List<Object>>();

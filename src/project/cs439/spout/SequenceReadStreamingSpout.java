@@ -19,6 +19,7 @@ public class SequenceReadStreamingSpout implements IRichSpout {
         this.done = false;
         this.fileName = fileName;
         this.fieldNames = fieldNames;
+        this.rowCount = 1;
     }
 
     @Override
@@ -53,6 +54,9 @@ public class SequenceReadStreamingSpout implements IRichSpout {
         if (scanner != null)
             scanner.close();
         scanner = new Scanner(fileName);
+        int i = 1;
+        while (scanner.hasNextLine() && i++ < rowCount * 4)
+             scanner.nextLine();
     }
 
     @Override

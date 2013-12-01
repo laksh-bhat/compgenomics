@@ -3,10 +3,9 @@ package project.cs439.topology;
 import backtype.storm.utils.DRPCClient;
 import com.google.common.collect.Lists;
 import project.cs439.function.CorrectionFunction;
-import project.cs439.query.statisticsQuery;
+import project.cs439.query.StatisticsQuery;
 import project.cs439.query.StatisticsReducer;
 import project.cs439.spout.SequenceReadStreamingSpout;
-import project.cs439.spout.SynchronousSequenceReadSpout;
 import project.cs439.state.StatisticsState;
 import project.cs439.state.StatisticsUpdater;
 import storm.trident.Stream;
@@ -35,7 +34,7 @@ public class ErrorCorrectorTopology {
                 .partitionBy(new Fields("read"))
                 .partitionPersist(new StatisticsState.StatisticsStateFactory(1000000, 15, readLength),
                                   new Fields("rownum", "read", "quality"), new StatisticsUpdater())
-		.parallelismHint(32)
+		        .parallelismHint(32)
 	;
 
         // Query the distributed histograms and aggregate.
@@ -44,18 +43,18 @@ public class ErrorCorrectorTopology {
                 .broadcast()  // for distributed query
                 .stateQuery(qMerStatistics,
                             new Fields("args"),
-                            new statisticsQuery(), // Distributed Query for persistent state
+                            new StatisticsQuery(), // Distributed Query for persistent state
                             new Fields("partialHistogram", "conditionalCounts", "positionalCounts"))
                 .project(new Fields("partialHistogram", "conditionalCounts", "positionalCounts"))
                 .aggregate(new Fields("partialHistogram", "conditionalCounts", "positionalCounts"),
                            new StatisticsReducer(), // Reduce statistics
                            new Fields("statistics"))
+                .parallelismHint(4)
                 .project(new Fields("statistics"))
                 .broadcast() // Broadcast statistics to all partitions
                 .each(new Fields("statistics"), new CorrectionFunction(),
                       new Fields("result"))
-                .parallelismHint(8)
-		.project(new Fields("result"))
+                .parallelismHint(32)
         ;
 
         return topology.build();
@@ -86,12 +85,15 @@ public class ErrorCorrectorTopology {
         conf.setNumAckers(8);
         conf.setNumWorkers(8);
         conf.setMaxSpoutPending(1000);
-        conf.put("topology.spout.max.batch.size", 5000);
+        conf.put("topology.spout.max.batch.size", 10000);
         conf.put("topology.trident.batch.emit.interval.millis", 500);
         conf.put(Config.DRPC_SERVERS, Lists.newArrayList("qp-hd1"));
         conf.put(Config.STORM_CLUSTER_MODE, "distributed");
-	conf.put(Config.NIMBUS_TASK_TIMEOUT_SECS, 60);
-
+	    conf.put(Config.NIMBUS_TASK_TIMEOUT_SECS, 120);
+        conf.put(Config.STORM_ZOOKEEPER_RETRY_INTERVAL, 5000);
+        conf.put(Config.STORM_ZOOKEEPER_CONNECTION_TIMEOUT, 180000);
+        conf.put(Config.STORM_ZOOKEEPER_SESSION_TIMEOUT, 150000);
+        conf.put(Config.STORM_ZOOKEEPER_RETRY_TIMES, 10);
         return conf;
     }
 

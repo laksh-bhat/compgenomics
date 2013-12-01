@@ -3,6 +3,7 @@ package project.cs439.state;
 import backtype.storm.task.IMetricsContext;
 import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnels;
+import org.apache.commons.lang3.tuple.Pair;
 import storm.trident.state.State;
 import storm.trident.state.StateFactory;
 
@@ -84,6 +85,27 @@ public class StatisticsState implements State, Serializable {
         }
     }
 
+    public static void saveBatchInDb (final Map<Integer, Pair<String, String>> dbPushMap,
+                                      final StatisticsState statisticsState)
+    {
+        try {
+            // Create a prepared statement
+            String sql = MessageFormat.format("insert into {0}(rownum, seqread, phred, corrected) values (?, ?, ?, ?)", StatisticsState.TABLE_NAME);
+            PreparedStatement pstmt = statisticsState.getJdbcConnection().prepareStatement(sql);
+
+            for (Integer rownum : dbPushMap.keySet()) {
+                pstmt.setInt(1, rownum);
+                pstmt.setString(2, dbPushMap.get(rownum).getLeft());
+                pstmt.setString(3, dbPushMap.get(rownum).getRight());
+                pstmt.setString(4, "");
+                pstmt.addBatch();
+            }
+            // Execute the batch
+            pstmt.executeBatch();
+            pstmt.close();
+        } catch ( SQLException ignore ) {}
+    }
+
 
     public static int getMaxReadId (final Connection jdbcConnection, final String tableName) throws SQLException {
         Statement stmt = jdbcConnection.createStatement();
@@ -128,17 +150,23 @@ public class StatisticsState implements State, Serializable {
 
     public static void updateCorrections (final Connection jdbcConnection,
                                           String tableName,
-                                          String correction,
-                                          int rownum) throws
+                                          Map<Integer, String> corrections) throws
     SQLException
     {
-        Statement stmt = jdbcConnection.createStatement();
-        stmt.setFetchSize(100);
-        stmt.setQueryTimeout(0);
-	correction = "'" + correction + "'";
-        String sql = MessageFormat.format("UPDATE {0} SET CORRECTED = {1} WHERE ROWNUM = {2}", tableName, correction, rownum);
-        stmt.execute(sql);
-        stmt.close();
+        try {
+            // Create a prepared statement
+            String sql = MessageFormat.format("UPDATE {0} SET CORRECTED = ? WHERE ROWNUM = ?", tableName);
+            PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+
+            for (Integer rowNum : corrections.keySet()) {
+                statement.setString(1, corrections.get(rowNum));
+                statement.setInt(2, rowNum);
+                statement.addBatch();
+            }
+            // Execute the batch
+            statement.executeBatch();
+            statement.close();
+        } catch ( SQLException ignore ) {}
     }
 
     public static void insert (final Connection jdbcConnection, Map<String, Object> row, String tableName) throws
@@ -267,5 +295,5 @@ public class StatisticsState implements State, Serializable {
     public static final  String TABLE_NAME  = "ecoli";
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     private static final String GENERAL_URL = "jdbc:mysql://qp-hd10:3306";
-    private static final String DB_URL      = "jdbc:mysql://qp-hd10/datasets:3306";
+    private static final String DB_URL      = "jdbc:mysql://qp-hd10:3306/datasets?useServerPrepStmts=false&rewriteBatchedStatements=true";
 }

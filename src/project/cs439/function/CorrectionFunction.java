@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * User: lbhat@damsl
@@ -33,7 +34,7 @@ public class CorrectionFunction implements Function {
 
         if(conditionalProbs == null || trustedQmers == null){
             collector.emit(new Values("nothing to return"));
-	    return;
+	        return;
         }
 
         //guessMoreUntrustedQmers(trustedQmers, 4, conditionalProbs);
@@ -47,7 +48,7 @@ public class CorrectionFunction implements Function {
             if (noOfPartitions != localPartition + 1)
                 endReadIndex = (localPartition + 1) * totalReadsProcessedByCurrentPartition;
             resultSet = StatisticsState.getAll(dbConnection, StatisticsState.TABLE_NAME, startReadIndex, endReadIndex);
-
+            Map<Integer, String> correctedStrings = new ConcurrentHashMap<Integer, String>();
             while (resultSet.next()) {
                 int rowNum = resultSet.getInt("rownum");
                 CharSequence seqRead = resultSet.getString("seqread");
@@ -62,7 +63,8 @@ public class CorrectionFunction implements Function {
                         seqRead = correctMultipleErrorsIfYouCan(conditionalProbs, trustedQmers, seqRead, start, end);
                     }
                 }
-                StatisticsState.updateCorrections(dbConnection, StatisticsState.TABLE_NAME, seqRead.toString(), rowNum);
+                correctedStrings.put(rowNum, seqRead.toString());
+                preserveInDb(resultSet, dbConnection, correctedStrings);
             }
         } catch ( SQLException e ) {
             e.printStackTrace();
@@ -73,6 +75,16 @@ public class CorrectionFunction implements Function {
             } catch ( SQLException e ) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void preserveInDb (final ResultSet resultSet,
+                               final Connection dbConnection,
+                               final Map<Integer, String> correctedStrings) throws SQLException
+    {// write in batches of 3000
+        if (correctedStrings.size() > 3000 || resultSet.isLast()){
+            StatisticsState.updateCorrections(dbConnection, StatisticsState.TABLE_NAME, correctedStrings);
+            correctedStrings.clear();
         }
     }
 
