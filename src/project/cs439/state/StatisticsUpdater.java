@@ -21,8 +21,10 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
     {
         for (TridentTuple readStreamElement : tuples) {
             int rowNum = readStreamElement.getIntegerByField("rownum");
-            if (statisticsState.getSeenTuples().contains(rowNum))
+            if (statisticsState.getSeenTuples().contains(rowNum)){
+		System.out.println("Row already seen; throwing away read with Id - " + rowNum);
                 continue;
+	    }
 
             String read = readStreamElement.getStringByField("read");
             String qualities = readStreamElement.getStringByField("quality");
@@ -31,13 +33,15 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
             learnAndFilterErrors(statisticsState, read, qualities);
             statisticsState.getSeenTuples().add(rowNum);
         }
-        System.out.println("Debug: StatisticsUpdater: Finished Updating State for this Batch");
+        System.out.println("Debug: StatisticsUpdater: Finished Updating State for this Batch -- " + tuples.size());
     }
 
     private static void learnAndFilterErrors (final StatisticsState statisticsState,
                                               final String read,
                                               final String qualities)
     {
+	
+//        System.out.println("Debug:learnAndFilterErrors ");
         int i;
         for (i = 0; i + StatisticsState.k < read.length(); i++) {
             String kmer = read.substring(i, i + StatisticsState.k);

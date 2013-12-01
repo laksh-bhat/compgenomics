@@ -18,7 +18,7 @@ public class DrpcQueryRunner {
             System.err.println("Where are the arguments?");
 
         long duration = 0;
-        DRPCClient drpcClient = new DRPCClient("qp-hd1", 3772, 900000);
+        DRPCClient drpcClient = new DRPCClient("qp-hd1", 3772, 9000000);
         long startTime = System.currentTimeMillis();
         String result = runQuery(args[0], drpcClient);
         long endTime = System.currentTimeMillis();

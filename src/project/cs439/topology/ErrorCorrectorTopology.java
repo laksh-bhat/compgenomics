@@ -28,38 +28,35 @@ public class ErrorCorrectorTopology {
                                                int readLength)
     {
         final TridentTopology topology = new TridentTopology();
-        final Stream sequenceStream = topology.newStream("sequence-reader", reader);
+        final Stream sequenceStream = topology.newStream("sequence-reader", reader).parallelismHint(1);
 
         // In this state we save the histogram
         TridentState qMerStatistics = sequenceStream
                 .partitionBy(new Fields("read"))
-                .partitionPersist(new StatisticsState.StatisticsStateFactory(1000, 15, readLength),
+                .partitionPersist(new StatisticsState.StatisticsStateFactory(1000000, 15, readLength),
                                   new Fields("rownum", "read", "quality"), new StatisticsUpdater())
-                .parallelismHint(8);
-
+		.parallelismHint(32)
+	;
 
         // Query the distributed histograms and aggregate.
         topology
-                .newDRPCStream(drpcFunction, drpc)
+                .newDRPCStream(drpcFunction, drpc).parallelismHint(1)
                 .broadcast()  // for distributed query
                 .stateQuery(qMerStatistics,
                             new Fields("args"),
                             new statisticsQuery(), // Distributed Query for persistent state
                             new Fields("partialHistogram", "conditionalCounts", "positionalCounts"))
-                .parallelismHint(1)
                 .project(new Fields("partialHistogram", "conditionalCounts", "positionalCounts"))
                 .aggregate(new Fields("partialHistogram", "conditionalCounts", "positionalCounts"),
                            new StatisticsReducer(), // Reduce statistics
                            new Fields("statistics"))
                 .project(new Fields("statistics"))
-                .parallelismHint(2)
                 .broadcast() // Broadcast statistics to all partitions
-                .parallelismHint(32)
                 .each(new Fields("statistics"), new CorrectionFunction(),
                       new Fields("result"))
-		        .project(new Fields("result"))
+                .parallelismHint(8)
+		.project(new Fields("result"))
         ;
-
 
         return topology.build();
     }
@@ -85,17 +82,15 @@ public class ErrorCorrectorTopology {
 
     public static Config getStormConfig () {
         Config conf = new Config();
-	//conf.setDebug(true);
+//        conf.setDebug(true);
         conf.setNumAckers(8);
         conf.setNumWorkers(8);
-        conf.setMaxSpoutPending(500);
-        conf.put("topology.spout.max.batch.size", 1000);
-        conf.put("topology.trident.batch.emit.interval.millis", 1000);
+        conf.setMaxSpoutPending(1000);
+        conf.put("topology.spout.max.batch.size", 5000);
+        conf.put("topology.trident.batch.emit.interval.millis", 500);
         conf.put(Config.DRPC_SERVERS, Lists.newArrayList("qp-hd1"));
         conf.put(Config.STORM_CLUSTER_MODE, "distributed");
-        conf.put(Config.NIMBUS_TASK_TIMEOUT_SECS, 180);
-        conf.put(Config.NIMBUS_SUPERVISOR_TIMEOUT_SECS, 180);
-        conf.put(Config.TOPOLOGY_MESSAGE_TIMEOUT_SECS, 30);
+	conf.put(Config.NIMBUS_TASK_TIMEOUT_SECS, 60);
 
         return conf;
     }
