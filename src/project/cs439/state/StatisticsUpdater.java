@@ -27,13 +27,13 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
             writeSequenceReadToDb(statisticsState, rowNum, read, qualities);
             learnAndFilterErrors(statisticsState, read, qualities);
         }
+        System.out.println("Debug: StatisticsUpdater: Finished Updating State for this Batch");
     }
 
     private static void learnAndFilterErrors (final StatisticsState statisticsState,
                                               final String read,
                                               final String qualities)
     {
-        System.out.println("Debug: started learnAndFilterErrors ");
         int i;
         for (i = 0; i + StatisticsState.k < read.length(); i++) {
             String kmer = read.substring(i, i + StatisticsState.k);
@@ -54,8 +54,6 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
             if (quality > 2) updateConditionalQualityProbability(statisticsState, read, i, quality);
             i++;
         }
-
-        System.out.println("Debug: finished learnAndFilterErrors ");
     }
 
     private void writeSequenceReadToDb (final StatisticsState statisticsState,

@@ -36,7 +36,7 @@ public class CorrectionFunction implements Function {
 	    return;
         }
 
-        guessMoreUntrustedQmers(trustedQmers, 3, conditionalProbs);
+        //guessMoreUntrustedQmers(trustedQmers, 4, conditionalProbs);
 
         try {
             dbConnection = StatisticsState.getNewDatabaseConnection();
