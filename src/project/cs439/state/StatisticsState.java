@@ -48,7 +48,7 @@ public class StatisticsState implements State, Serializable {
     }
 
     private static void setConnectionProperties (Connection connection) throws SQLException {
-        connection.setAutoCommit(true);
+        connection.setAutoCommit(false);
         Statement stmt = connection.createStatement();
         if (stmt.execute(
                 MessageFormat.format(
@@ -87,7 +87,6 @@ public class StatisticsState implements State, Serializable {
 
 
     public static int getMaxReadId (final Connection jdbcConnection, final String tableName) throws SQLException {
-        System.out.println("Debug: getMaxRead -- " + tableName);
         Statement stmt = jdbcConnection.createStatement();
         String sql = MessageFormat.format("SELECT max(rownum) as count FROM {0}", tableName);
         ResultSet rs = stmt.executeQuery(sql);
@@ -103,7 +102,6 @@ public class StatisticsState implements State, Serializable {
     public static Map<String, Object> getAll (final Connection jdbcConnection, String tableName, int readId) throws
     SQLException
     {
-        System.out.println("Debug: getAll -- " + tableName);
         Statement stmt = jdbcConnection.createStatement();
         String sql = MessageFormat.format("SELECT * FROM {0} where rownum = {1}", tableName, readId);
         ResultSet rs = stmt.executeQuery(sql);
@@ -121,8 +119,6 @@ public class StatisticsState implements State, Serializable {
     public static ResultSet getAll (final Connection jdbcConnection, String tableName, int start, int end) throws
     SQLException
     {
-
-        System.out.println("Debug: getAll -- " + tableName);
         Statement stmt = jdbcConnection.createStatement();
         stmt.setFetchSize(100);
         stmt.setQueryTimeout(0);
@@ -149,7 +145,6 @@ public class StatisticsState implements State, Serializable {
     public static void insert (final Connection jdbcConnection, Map<String, Object> row, String tableName) throws
     SQLException
     {
-        System.out.println("Debug: insert -- " + row);
         Statement stmt = jdbcConnection.createStatement();
         StringBuilder sql = new StringBuilder();
         sql.append(MessageFormat.format("insert into {0} ( ", tableName));
@@ -212,11 +207,11 @@ public class StatisticsState implements State, Serializable {
 
     @Override
     public void commit (final Long aLong) {
-        /*try {
+        try {
             jdbcConnection.commit();
         } catch ( SQLException e ) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     @Override
@@ -237,7 +232,6 @@ public class StatisticsState implements State, Serializable {
         }
 
         public State makeState (Map conf, IMetricsContext metrics, int partitionIndex, int numPartitions) {
-            // our logic is fully idempotent => no Opaque Map or Transactional Map required here
             try {
                 return new StatisticsState(expectedNoOfElements, k, readLength);
             } catch ( SQLException e ) {
@@ -249,7 +243,6 @@ public class StatisticsState implements State, Serializable {
 
     public static StateFactory FACTORY = new StateFactory() {
         public State makeState (Map conf, IMetricsContext metrics, int partitionIndex, int numPartitions) {
-            // our logic is fully idempotent => no Opaque Map or Transactional Map required here
             try {
                 return new StatisticsState();
             } catch ( SQLException e ) {

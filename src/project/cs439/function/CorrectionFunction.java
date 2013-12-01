@@ -16,13 +16,13 @@ import java.util.*;
  * Date: 11/24/13
  * Time: 9:49 PM
  */
+
 public class CorrectionFunction implements Function {
     private int localPartition, noOfPartitions;
     final static char[] acgt = {'A', 'C', 'G', 'T'};
 
     @Override
     public void execute (final TridentTuple tuple, final TridentCollector collector) {
-        System.out.println("Debug: Started correction... ");
         
 	ResultSet resultSet = null;
         Connection dbConnection = null;
@@ -36,7 +36,7 @@ public class CorrectionFunction implements Function {
 	    return;
         }
 
-        guessMoreUntrustedQmers(trustedQmers, 4, conditionalProbs);
+        guessMoreUntrustedQmers(trustedQmers, 3, conditionalProbs);
 
         try {
             dbConnection = StatisticsState.getNewDatabaseConnection();
@@ -87,7 +87,7 @@ public class CorrectionFunction implements Function {
     private static CharSequence correctMultipleErrorsIfYouCan (final double[][][] conditionalProbs,
                                                                final Map<String, Double> trustedQmers,
                                                                CharSequence seqRead, final int start, final int end)
-    {// exponential problem. 2 cases. region reaches the end of read or not.
+    {	// exponential problem. 2 cases. region reaches the end of read or not.
         // Obs: In latter case, the last nucleotide of the last trusted k-mer must belong to trusted region
         if (end == seqRead.length()) {
             StringBuilder sb = new StringBuilder().append(seqRead);
@@ -265,26 +265,28 @@ public class CorrectionFunction implements Function {
         }
     }
 
+
     /**
      * @param trustedQmers
      * @param cutoff
      * @param conditionalCounts
      */
 
-     private static void guessMoreUntrustedQmers (final Map<String, Double> trustedQmers, double cutoff,
+     private static synchronized void guessMoreUntrustedQmers (final Map<String, Double> trustedQmers, double cutoff,
                                                   final double[][][] conditionalCounts)
      {
-        System.out.println("Debug: guessMoreUntrustedQmers ");
         List<String> temp = new ArrayList<String>();
         for (Map.Entry<String, Double> entry: trustedQmers.entrySet()){
             double multiplicity = entry.getValue();
-            if (multiplicity < cutoff) temp.add(entry.getKey());
+            if (multiplicity != 1 && multiplicity < cutoff) temp.add(entry.getKey());
         }
         for (String key : temp)
             trustedQmers.remove(key);
         
         temp.clear();
      }
+
+
     /**
      * @param seqRead
      * @param phred
@@ -297,7 +299,6 @@ public class CorrectionFunction implements Function {
                                                                    final Map<String, Double> trustedQmers,
                                                                    int k)
     {
-        System.out.println("Debug: findUntrustedIntersections ");
         List<List<Integer>> untrustedRanges = new ArrayList<List<Integer>>(1);
         List<Integer> untrustedQmerRange = new ArrayList<Integer>();
         boolean isUntrustedRegionBegun = false;

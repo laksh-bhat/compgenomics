@@ -14,6 +14,7 @@ import java.util.List;
  * Date: 11/22/13
  * Time: 1:46 AM
  */
+
 public class statisticsQuery extends BaseQueryFunction<StatisticsState, List<Object>> {
     @Override
     public List<List<Object>> batchRetrieve (final StatisticsState abundanceHistogram, final List<TridentTuple> tridentTuples) {
@@ -30,7 +31,6 @@ public class statisticsQuery extends BaseQueryFunction<StatisticsState, List<Obj
 
     @Override
     public void execute (final TridentTuple objects, final List<Object> list, final TridentCollector collector) {
-        System.out.println("Querying State -- List " + list);
         if(list != null) 
             collector.emit(new Values(list.get(0), list.get(1), list.get(2)));
         else
