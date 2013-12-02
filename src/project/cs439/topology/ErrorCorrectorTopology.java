@@ -34,7 +34,7 @@ public class ErrorCorrectorTopology {
                 .partitionBy(new Fields("read"))
                 .partitionPersist(new StatisticsState.StatisticsStateFactory(1000000, 15, readLength),
                                   new Fields("rownum", "read", "quality"), new StatisticsUpdater())
-		        .parallelismHint(32)
+                .parallelismHint(64)
 	;
 
         // Query the distributed histograms and aggregate.
@@ -49,12 +49,12 @@ public class ErrorCorrectorTopology {
                 .aggregate(new Fields("partialHistogram", "conditionalCounts", "positionalCounts"),
                            new StatisticsReducer(), // Reduce statistics
                            new Fields("statistics"))
-                .parallelismHint(4)
+                .parallelismHint(1)
                 .project(new Fields("statistics"))
                 .broadcast() // Broadcast statistics to all partitions
                 .each(new Fields("statistics"), new CorrectionFunction(),
                       new Fields("result"))
-                .parallelismHint(32)
+                .parallelismHint(16)
         ;
 
         return topology.build();
@@ -84,16 +84,20 @@ public class ErrorCorrectorTopology {
 //        conf.setDebug(true);
         conf.setNumAckers(8);
         conf.setNumWorkers(8);
-        conf.setMaxSpoutPending(1000);
+        conf.setMaxSpoutPending(100);
         conf.put("topology.spout.max.batch.size", 10000);
-        conf.put("topology.trident.batch.emit.interval.millis", 500);
+        conf.put("topology.trident.batch.emit.interval.millis", 100);
         conf.put(Config.DRPC_SERVERS, Lists.newArrayList("qp-hd1"));
         conf.put(Config.STORM_CLUSTER_MODE, "distributed");
-	    conf.put(Config.NIMBUS_TASK_TIMEOUT_SECS, 120);
-        conf.put(Config.STORM_ZOOKEEPER_RETRY_INTERVAL, 5000);
-        conf.put(Config.STORM_ZOOKEEPER_CONNECTION_TIMEOUT, 180000);
-        conf.put(Config.STORM_ZOOKEEPER_SESSION_TIMEOUT, 150000);
-        conf.put(Config.STORM_ZOOKEEPER_RETRY_TIMES, 10);
+	conf.put(Config.NIMBUS_TASK_TIMEOUT_SECS, 120);
+//        conf.put(Config.STORM_ZOOKEEPER_RETRY_INTERVAL, 5000);
+//        conf.put(Config.STORM_ZOOKEEPER_CONNECTION_TIMEOUT, 180000);
+//        conf.put(Config.STORM_ZOOKEEPER_SESSION_TIMEOUT, 150000);
+//        conf.put(Config.STORM_ZOOKEEPER_RETRY_TIMES, 10);
+        conf.put(Config.TOPOLOGY_ENABLE_MESSAGE_TIMEOUTS, false);
+        conf.put(Config.TOPOLOGY_MESSAGE_TIMEOUT_SECS, 900);
+        conf.put(Config.DRPC_REQUEST_TIMEOUT_SECS, 1800);
+
         return conf;
     }
 
@@ -109,5 +113,4 @@ public class ErrorCorrectorTopology {
         StormSubmitter.submitTopology("EC", config, topology);
     }
 }
-
 

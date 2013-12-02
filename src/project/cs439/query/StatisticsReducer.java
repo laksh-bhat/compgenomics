@@ -32,7 +32,7 @@ public class StatisticsReducer implements ReducerAggregator<List<Object>> {
                               final Hashtable<String, Double> incomingQmers,
                               final double[][] positionalCounts, final double[][][] positionalConditionalCounts)
     {
-        System.out.println("Debug: Start reducing... ");
+        System.out.println("Debug: Started Reducing... ");
         if (stats.size() == 0) {
             stats.add(incomingQmers);
             stats.add(positionalConditionalCounts);

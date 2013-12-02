@@ -90,7 +90,7 @@ public class StatisticsState implements State, Serializable {
     {
         try {
             // Create a prepared statement
-            String sql = MessageFormat.format("insert into {0}(rownum, seqread, phred, corrected) values (?, ?, ?, ?)", StatisticsState.TABLE_NAME);
+            String sql = MessageFormat.format("insert ignore into {0} set rownum = ?, seqread= ?, phred = ?, corrected = ?", StatisticsState.TABLE_NAME);
             PreparedStatement pstmt = statisticsState.getJdbcConnection().prepareStatement(sql);
 
             for (Integer rownum : dbPushMap.keySet()) {
@@ -102,6 +102,7 @@ public class StatisticsState implements State, Serializable {
             }
             // Execute the batch
             pstmt.executeBatch();
+            statisticsState.getJdbcConnection().commit();
             pstmt.close();
         } catch ( SQLException ignore ) {}
     }
@@ -120,11 +121,12 @@ public class StatisticsState implements State, Serializable {
         return maxRow;
     }
 
+
     public static Map<String, Object> getAll (final Connection jdbcConnection, String tableName, int readId) throws
     SQLException
     {
         Statement stmt = jdbcConnection.createStatement();
-        String sql = MessageFormat.format("SELECT * FROM {0} where rownum = {1}", tableName, readId);
+        String sql = MessageFormat.format("SELECT * FROM {0} where rownum = {1}", tableName, String.valueOf(readId));
         ResultSet rs = stmt.executeQuery(sql);
         Map<String, Object> ret = new HashMap<String, Object>();
         if (rs.next()) {
@@ -137,16 +139,19 @@ public class StatisticsState implements State, Serializable {
         return ret;
     }
 
+
     public static ResultSet getAll (final Connection jdbcConnection, String tableName, int start, int end) throws
     SQLException
     {
         Statement stmt = jdbcConnection.createStatement();
         stmt.setFetchSize(100);
         stmt.setQueryTimeout(0);
-        String sql = MessageFormat.format("SELECT * FROM {0} where rownum >= {1} and rownum <= {2}", tableName, start,
-                                          end);
+        String sql = MessageFormat.format("SELECT * FROM {0} where rownum >= {1} and rownum <= {2} and corrected = '''' ", tableName, String.valueOf(start),
+                                          String.valueOf(end));
         return stmt.executeQuery(sql);
     }
+
+
 
     public static void updateCorrections (final Connection jdbcConnection,
                                           String tableName,

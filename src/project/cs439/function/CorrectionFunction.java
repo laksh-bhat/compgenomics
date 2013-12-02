@@ -36,8 +36,7 @@ public class CorrectionFunction implements Function {
             collector.emit(new Values("nothing to return"));
 	        return;
         }
-
-        //guessMoreUntrustedQmers(trustedQmers, 4, conditionalProbs);
+	System.out.println("Debug: partition [ " + localPartition + " ] of [ " + noOfPartitions + " ]: Started Correcting... ");
 
         try {
             dbConnection = StatisticsState.getNewDatabaseConnection();
@@ -82,8 +81,9 @@ public class CorrectionFunction implements Function {
                                final Connection dbConnection,
                                final Map<Integer, String> correctedStrings) throws SQLException
     {// write in batches of 3000
-        if (correctedStrings.size() > 3000 || resultSet.isLast()){
+        if (correctedStrings.size() >= 3000 || resultSet.isLast()){
             StatisticsState.updateCorrections(dbConnection, StatisticsState.TABLE_NAME, correctedStrings);
+	    System.out.println("Debug: partition [ " + localPartition + " ] of [ " + noOfPartitions + " ]: Corrected a batch of strings -- " + correctedStrings.size());
             correctedStrings.clear();
         }
     }

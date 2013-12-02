@@ -22,7 +22,8 @@ public class StatisticsQuery extends BaseQueryFunction<StatisticsState, List<Obj
         List<List<Object>> listList = new ArrayList<List<Object>>();
         for (int i = 0; i < tridentTuples.size(); i++){
             List<Object> list = new ArrayList<Object>(3);
-            list.add(guessMoreUntrustedQmers(abundanceHistogram.getTrustedQmers(), 4));
+            guessMoreUntrustedQmers(abundanceHistogram.getTrustedQmers(), 5);
+            list.add(abundanceHistogram.getTrustedQmers());
             list.add(abundanceHistogram.positionalConditionalQualityCounts);
             list.add(abundanceHistogram.positionalQualityCounts);
             listList.add(list);
@@ -34,11 +35,9 @@ public class StatisticsQuery extends BaseQueryFunction<StatisticsState, List<Obj
     public void execute (final TridentTuple objects, final List<Object> list, final TridentCollector collector) {
         if(list != null) 
             collector.emit(new Values(list.get(0), list.get(1), list.get(2)));
-        else
-            collector.emit(new Values(null, null, null));
     }
 
-    private static synchronized Map<String, Double> guessMoreUntrustedQmers (final Map<String, Double> trustedQmers, double cutoff)
+    private static synchronized void guessMoreUntrustedQmers (final Map<String, Double> trustedQmers, double cutoff)
     {
         List<String> temp = new ArrayList<String>();
         for (Map.Entry<String, Double> entry: trustedQmers.entrySet()){
@@ -49,6 +48,5 @@ public class StatisticsQuery extends BaseQueryFunction<StatisticsState, List<Obj
             trustedQmers.remove(key);
 
         temp.clear();
-        return trustedQmers;
     }
 }
