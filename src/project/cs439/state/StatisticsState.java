@@ -11,25 +11,27 @@ import java.io.Serializable;
 import java.sql.*;
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import static com.google.common.hash.BloomFilter.create;
 
 
 public class StatisticsState implements State, Serializable {
     public StatisticsState () throws SQLException {
-        k = 15;
+        StatisticsState.k = 15;
         bloomFilter = create(Funnels.stringFunnel(), 100000, 0.001);
-        trustedQmers = new Hashtable<String, Double>(100);
+        trustedQmers = new ConcurrentHashMap<String, Double>(100);
 
         positionalQualityCounts = new double[100][5]; //P,O
         positionalConditionalQualityCounts = new double[100][5][5]; // P,A,O
 
         jdbcConnection = getNewDatabaseConnection();
-        seenTuples = new HashSet<Integer>();
+        seenTuples = new CopyOnWriteArraySet<Integer>();
     }
 
     public StatisticsState (int expectedNumberOfElements, int k, int readLength) throws SQLException {
-        this.k = k;
+        StatisticsState.k = k;
         bloomFilter = create(Funnels.stringFunnel(), expectedNumberOfElements, 0.001);
         trustedQmers = new Hashtable<String, Double>(100);
 
@@ -37,7 +39,7 @@ public class StatisticsState implements State, Serializable {
         positionalConditionalQualityCounts = new double[readLength][5][5]; // P,A,O
 
         jdbcConnection = getNewDatabaseConnection();
-        seenTuples = new HashSet<Integer>();
+        seenTuples = new CopyOnWriteArraySet<Integer>();
     }
 
     public static Connection getNewDatabaseConnection () throws SQLException {
@@ -233,7 +235,7 @@ public class StatisticsState implements State, Serializable {
         return bloomFilter;
     }
 
-    public Hashtable<String, Double> getTrustedQmers () {
+    public Map<String, Double> getTrustedQmers () {
         return trustedQmers;
     }
 
@@ -253,7 +255,7 @@ public class StatisticsState implements State, Serializable {
         return jdbcConnection;
     }
 
-    public HashSet<Integer> getSeenTuples () {
+    public Set<Integer> getSeenTuples () {
         return seenTuples;
     }
 
@@ -293,8 +295,8 @@ public class StatisticsState implements State, Serializable {
     public        double[][][] positionalConditionalQualityCounts;
 
     private Connection                                       jdbcConnection;
-    private HashSet<Integer>                                 seenTuples;
-    private Hashtable<String, Double>                        trustedQmers;
+    private Set<Integer>                                     seenTuples;
+    private Map<String, Double>                              trustedQmers;
     private com.google.common.hash.BloomFilter<CharSequence> bloomFilter;
 
     public static final  String TABLE_NAME  = "ecoli";

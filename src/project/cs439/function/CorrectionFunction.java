@@ -24,19 +24,20 @@ public class CorrectionFunction implements Function {
 
     @Override
     public void execute (final TridentTuple tuple, final TridentCollector collector) {
-        
-	ResultSet resultSet = null;
+        System.out.println("Debug: partition [ " + localPartition + " ] of [ " + noOfPartitions + " ]: Started Correcting... ");
+
+        ResultSet resultSet = null;
         Connection dbConnection = null;
         List<Object> statistics = (List<Object>) tuple.getValueByField("statistics");
-        Map<String, Double> trustedQmers = (Hashtable<String, Double>) statistics.get(0);
-	// These are not real probabilities. We need to normalize them. But that's unnecessary for our purposes.
-        double[][][] conditionalProbs = (double[][][]) statistics.get(1); 
+        Map<String, Double> trustedQmers = (Map<String, Double>) statistics.get(0);
+        // These are not real probabilities. We have to normalize them to make them proper probabilities.
+        // But that's unnecessary for our purposes.
+        double[][][] conditionalProbs = (double[][][]) statistics.get(1);
 
         if(conditionalProbs == null || trustedQmers == null){
             collector.emit(new Values("nothing to return"));
-	        return;
+            return;
         }
-	System.out.println("Debug: partition [ " + localPartition + " ] of [ " + noOfPartitions + " ]: Started Correcting... ");
 
         try {
             dbConnection = StatisticsState.getNewDatabaseConnection();

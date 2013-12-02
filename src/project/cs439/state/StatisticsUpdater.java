@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * User: lbhat@damsl
@@ -21,7 +22,7 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
     public void updateState (final StatisticsState statisticsState, final List<TridentTuple> tuples,
                              final TridentCollector collector)
     {
-        Hashtable<Integer, Pair<String, String>> dbPushMap = new Hashtable<Integer, Pair<String, String>>();
+        Map<Integer, Pair<String, String>> dbPushMap = new ConcurrentHashMap<Integer, Pair<String, String>>();
         for (TridentTuple readStreamElement : tuples) {
             int rowNum = readStreamElement.getIntegerByField("rownum");
             if (statisticsState.getSeenTuples().contains(rowNum))
@@ -34,9 +35,10 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
             learnAndFilterErrors(statisticsState, read, qualities);
             statisticsState.getSeenTuples().add(rowNum);
         }
+        System.out.println(MessageFormat.format("Debug: StatisticsUpdater: Updated batch of {0} reads", dbPushMap.size()));
+
         StatisticsState.saveBatchInDb(dbPushMap, statisticsState);
         dbPushMap.clear();
-        System.out.println("Debug: StatisticsUpdater: Finished Updating State for this Batch -- " + tuples.size());
     }
 
 

@@ -3,6 +3,7 @@ package project.cs439.query;
 import storm.trident.operation.ReducerAggregator;
 import storm.trident.tuple.TridentTuple;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -21,7 +22,7 @@ public class StatisticsReducer implements ReducerAggregator<List<Object>> {
 
     @Override
     public List<Object> reduce (final List<Object> stats, final TridentTuple objects) {
-        Hashtable<String, Double> incomingQmers = (Hashtable<String, Double>) objects.getValueByField("partialHistogram");
+        Map<String, Double> incomingQmers = (Map<String, Double>) objects.getValueByField("partialHistogram");
         double[][] positionalCounts = (double[][]) objects.getValueByField("positionalCounts");
         double[][][] positionalConditionalCounts = (double[][][]) objects.getValueByField("conditionalCounts");
         doReduction(stats, incomingQmers, positionalCounts, positionalConditionalCounts);
@@ -29,19 +30,23 @@ public class StatisticsReducer implements ReducerAggregator<List<Object>> {
     }
 
     private void doReduction (final List<Object> stats,
-                              final Hashtable<String, Double> incomingQmers,
+                              final Map<String, Double> incomingQmers,
                               final double[][] positionalCounts, final double[][][] positionalConditionalCounts)
     {
-        System.out.println("Debug: Started Reducing... ");
         if (stats.size() == 0) {
+            System.out.println(MessageFormat.format("Debug: Initial Reduce. Incoming Qmer Size {0}." +
+                                                            " TrustedQmers size {1}.", incomingQmers.size(), incomingQmers.size()));
             stats.add(incomingQmers);
             stats.add(positionalConditionalCounts);
             stats.add(positionalCounts);
         } else {
             // Updates stats by reference
-            Hashtable<String, Double> reducedQmers = (Hashtable<String, Double>) stats.get(0);
+            Map<String, Double> reducedQmers = (Map<String, Double>) stats.get(0);
             double[][][] pcc = (double[][][]) stats.get(1);
             double[][] pc = (double[][]) stats.get(2);
+
+            System.out.println(MessageFormat.format("Debug: Complex Reduce. Incoming Qmer Size {0}." +
+                                                            " TrustedQmers size {1}.", incomingQmers.size(), reducedQmers.size()));
 
             // Reduce conditional counts
             for (int i = 0; i < positionalConditionalCounts.length; i++)
@@ -62,5 +67,6 @@ public class StatisticsReducer implements ReducerAggregator<List<Object>> {
                     reducedQmers.put(qmer, incomingQmers.get(qmer));
             }
         }
+        System.out.println("Debug: Finished Reducing. ");
     }
 }
