@@ -32,11 +32,12 @@ public class ErrorCorrectorTopology {
     public static StormTopology buildTopology (LocalDRPC drpc, String drpcFunction, final ITridentSpout reader,
                                                int readLength)
     {
-        int parallelismHint = 8;
+        int parallelismHint = 16;
         final TridentTopology topology = new TridentTopology();
         final Stream sequenceStream = topology.newStream("sequence-reader", reader).parallelismHint(1);
-        final Stream kMerStream = sequenceStream
-                .each(new Fields("rownum", "read", "quality"), new KmerSplitFilter(), new Fields("rownum", "kmer", "qmer"))
+        final Stream kMerStream = sequenceStream.parallelismHint(1)
+                .each(new Fields("rownum", "read", "quality"), new KmerSplitFilter(), new Fields("kmer", "qmer"))
+		.project(new Fields("rownum", "kmer", "qmer"))
                 .parallelismHint(parallelismHint);
 
         final TridentState histogram = kMerStream
@@ -56,8 +57,10 @@ public class ErrorCorrectorTopology {
                 .parallelismHint(parallelismHint)
 	    ;
 
+	Stream drpcStream = topology.newDRPCStream("EC", drpc).parallelismHint(1);
+
         // Query the distributed histograms and aggregate.
-        Stream combinedHistogram = topology.newDRPCStream(drpcFunction, drpc)
+        Stream combinedHistogram = drpcStream
                 .broadcast() // for distributed query
                 .stateQuery(histogram,
                             new Fields("args"),
@@ -70,8 +73,7 @@ public class ErrorCorrectorTopology {
         ;
 
         // Query the distributed counts and aggregate.
-        Stream combinedCounts = topology
-                .newDRPCStream(drpcFunction, drpc).parallelismHint(1)
+        Stream combinedCounts = drpcStream
                 .broadcast()  // for distributed query
                 .stateQuery(qMerStatistics,
                             new Fields("args"),
@@ -87,10 +89,12 @@ public class ErrorCorrectorTopology {
                              combinedCounts,
                              new MultiStatsReducer(),
                              new Fields("histogram", "conditionalCounts", "positionalCounts"))
-        .each(new Fields("histogram", "conditionalCounts", "positionalCounts"),
-              new CorrectionFunction(),
-              new Fields("result"))
+                .each(new Fields("histogram", "conditionalCounts", "positionalCounts"),
+                      new CorrectionFunction(),
+                      new Fields("result"))
+         	.parallelismHint(parallelismHint)
         ;
+
         return topology.build();
     }
 
@@ -107,18 +111,18 @@ public class ErrorCorrectorTopology {
 //      conf.setDebug(true);
         conf.setNumAckers(8);
         conf.setNumWorkers(8);
-        conf.setMaxSpoutPending(100);
-        conf.put("topology.spout.max.batch.size", 10000);
-        conf.put("topology.trident.batch.emit.interval.millis", 100);
+        conf.setMaxSpoutPending(32);
+        conf.put("topology.spout.max.batch.size", 25000);
+        conf.put("topology.trident.batch.emit.interval.millis", 500);
         conf.put(Config.DRPC_SERVERS, Lists.newArrayList("qp-hd3", "qp-hd4", "qp-hd5", "qp-hd6", "qp-hd7", "qp-hd8", "qp-hd9"));
         conf.put(Config.STORM_CLUSTER_MODE, "distributed");
-	    conf.put(Config.NIMBUS_TASK_TIMEOUT_SECS, 120);
+//	conf.put(Config.NIMBUS_TASK_TIMEOUT_SECS, 120);
 //      conf.put(Config.STORM_ZOOKEEPER_RETRY_INTERVAL, 5000);
 //      conf.put(Config.STORM_ZOOKEEPER_CONNECTION_TIMEOUT, 180000);
 //      onf.put(Config.STORM_ZOOKEEPER_SESSION_TIMEOUT, 150000);
 //      conf.put(Config.STORM_ZOOKEEPER_RETRY_TIMES, 10);
-        conf.put(Config.TOPOLOGY_ENABLE_MESSAGE_TIMEOUTS, true);
-        //conf.put(Config.TOPOLOGY_MESSAGE_TIMEOUT_SECS, 900);
+//      conf.put(Config.TOPOLOGY_ENABLE_MESSAGE_TIMEOUTS, true);
+//      conf.put(Config.TOPOLOGY_MESSAGE_TIMEOUT_SECS, 900);
         conf.put(Config.DRPC_REQUEST_TIMEOUT_SECS, 1800);
 
         return conf;
@@ -155,9 +159,9 @@ public class ErrorCorrectorTopology {
                 //if (averageQuality < 3)
                 //    continue;
 
-                tridentCollector.emit(new Values(rowNum, kmer, qmer));
+                tridentCollector.emit(new Values(kmer, qmer));
             }
-            System.out.println(MessageFormat.format("Debug: Kmer Split at partition [{0}] of [{1}]", localPartition, noOfPartitions));
+            //System.out.println(MessageFormat.format("Debug: Kmer Split at partition [{0}] of [{1}]", localPartition, noOfPartitions));
         }
 
         @Override

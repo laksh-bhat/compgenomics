@@ -13,15 +13,15 @@ import java.util.Map;
  * Date: 11/22/13
  * Time: 2:00 AM
  */
-public class HistogramCombiner implements CombinerAggregator<HashMap<String, Double>> {
+public class HistogramCombiner implements CombinerAggregator<Map<String, Double>> {
     @Override
-    public HashMap<String, Double> init (final TridentTuple tuple) {
-         return (HashMap<String, Double>) tuple.getValueByField("partialHistogram");
+    public Map<String, Double> init (final TridentTuple tuple) {
+         return (Map<String, Double>) tuple.getValueByField("partialHistogram");
     }
 
     @Override
-    public HashMap<String, Double> combine (final HashMap<String, Double> collectorHistogram,
-                                            final HashMap<String, Double> partialHistogram)
+    public Map<String, Double> combine (final Map<String, Double> collectorHistogram,
+                                            final Map<String, Double> partialHistogram)
     {
         for (String key : collectorHistogram.keySet()){
             if (partialHistogram.containsKey(key))
@@ -29,11 +29,12 @@ public class HistogramCombiner implements CombinerAggregator<HashMap<String, Dou
             partialHistogram.remove(key);
         }
         collectorHistogram.putAll(partialHistogram);
+	System.out.println("Debug: HistogramCombiner finished with histogram size " + collectorHistogram.size());
         return collectorHistogram;
     }
 
     @Override
-    public HashMap<String, Double> zero () {
-        return new HashMap<String, Double>(0);
+    public Map<String, Double> zero () {
+        return (Map<String, Double>) new HashMap<String, Double>(0);
     }
 }

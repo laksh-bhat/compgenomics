@@ -66,6 +66,11 @@ public class SequenceReadStreamingSpout implements IRichSpout {
 
     @Override
     public void nextTuple () {
+	if(done){
+            System.out.println("FastQ spout has nothing to emit; Come back later!");
+            return;
+	}
+
         int i = 0;
         String[] fastQ = {null, null};
 

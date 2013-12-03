@@ -42,11 +42,13 @@ public class MultiStatsReducer implements MultiReducer<Map<String, Object>> {
                 reducedMap.put("positionalCounts", stats.get(1));
                 break;
         }
+	System.out.println("Debug: Multi reducing finished");
     }
 
     @Override
     public void complete (final Map<String, Object> reducedMap, final TridentCollector collector) {
         collector.emit(new Values(reducedMap.get("histogram"), reducedMap.get("conditionalCounts"), reducedMap.get("positionalCounts")));
+	System.out.println("Debug: Multi reduce complete emitted histogram and counts");
     }
 
     @Override
