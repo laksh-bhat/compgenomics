@@ -103,7 +103,7 @@ public class StatisticsUpdater extends BaseStateUpdater<StatisticsState> {
             // TODO: Is this assumption valid? What if errors have high correctness probability?
             // TODO: Now this is becoming philosophical. Go get a coffee!
             // TODO: If this is an SNP, the average quality must be high. So retain it.
-            if (correctnessProbability > 0.999) {statisticsState.getTrustedQmers().put(kmer, 1D);}
+            if (correctnessProbability > 0.999) {statisticsState.getTrustedQmers().put(kmer, 1.1);}
         }
     }
 

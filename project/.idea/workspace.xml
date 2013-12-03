@@ -85,7 +85,7 @@
     <file path="/CorrectErrors.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385323066762" ignored="false" />
     <file path="/AxFinderTransactional.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385347418474" ignored="false" />
     <file path="/AbundanceStatistics.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385361114104" ignored="false" />
-    <file path="/CorrectionFunction.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1386032665774" ignored="false" />
+    <file path="/CorrectionFunction.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1386041033424" ignored="false" />
     <file path="/StatisticsState.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385958817889" ignored="false" />
     <file path="/Dummy.txt" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385889421153" ignored="false" />
     <file path="/TestCorrectors.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385540927306" ignored="false" />
@@ -222,7 +222,7 @@
       <file leaf-file-name="CorrectionFunction.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../src/project/cs439/function/CorrectionFunction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="32" column="98" selection-start="1249" selection-end="1249" vertical-scroll-proportion="0.6925926">
+            <state line="306" column="76" selection-start="14753" selection-end="14753" vertical-scroll-proportion="0.86851853">
               <folding />
             </state>
           </provider>
@@ -249,7 +249,7 @@
       <file leaf-file-name="StatisticsUpdater.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/project/cs439/state/StatisticsUpdater.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="144" column="0" selection-start="6771" selection-end="6945" vertical-scroll-proportion="0.0">
+            <state line="105" column="99" selection-start="4859" selection-end="4859" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -278,8 +278,8 @@
         <option value="$PROJECT_DIR$/../src/project/cs439/state/StatisticsState.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/topology/ErrorCorrectorTopology.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/query/StatisticsReducer.java" />
-        <option value="$PROJECT_DIR$/../src/project/cs439/state/StatisticsUpdater.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/query/StatisticsQuery.java" />
+        <option value="$PROJECT_DIR$/../src/project/cs439/state/StatisticsUpdater.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/function/CorrectionFunction.java" />
       </list>
     </option>
@@ -828,20 +828,6 @@
         <state line="9" column="12" selection-start="245" selection-end="251" vertical-scroll-proportion="-5.44" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../src/project/cs439/state/StatisticsUpdater.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="144" column="0" selection-start="6771" selection-end="6945" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/project/cs439/query/StatisticsReducer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="85" selection-start="409" selection-end="409" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../src/project/cs439/spout/SequenceReadStreamingSpout.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="28" column="98" selection-start="880" selection-end="880" vertical-scroll-proportion="0.0">
@@ -870,9 +856,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../src/project/cs439/query/StatisticsReducer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="85" selection-start="409" selection-end="409" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/project/cs439/state/StatisticsUpdater.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="105" column="99" selection-start="4859" selection-end="4859" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../src/project/cs439/function/CorrectionFunction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="98" selection-start="1249" selection-end="1249" vertical-scroll-proportion="0.6925926">
+        <state line="306" column="76" selection-start="14753" selection-end="14753" vertical-scroll-proportion="0.86851853">
           <folding />
         </state>
       </provider>

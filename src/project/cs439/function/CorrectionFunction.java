@@ -28,11 +28,12 @@ public class CorrectionFunction implements Function {
 
         ResultSet resultSet = null;
         Connection dbConnection = null;
+
         List<Object> statistics = (List<Object>) tuple.getValueByField("statistics");
         Map<String, Double> trustedQmers = (Map<String, Double>) statistics.get(0);
+        double[][][] conditionalProbs = (double[][][]) statistics.get(1);
         // These are not real probabilities. We have to normalize them to make them proper probabilities.
         // But that's unnecessary for our purposes.
-        double[][][] conditionalProbs = (double[][][]) statistics.get(1);
 
         if(conditionalProbs == null || trustedQmers == null)
             return;
@@ -91,7 +92,7 @@ public class CorrectionFunction implements Function {
     {   // write in batches of 3000
         if (correctedStrings.size() >= 3000 || resultSet.isLast()){
             StatisticsState.updateCorrections(dbConnection, StatisticsState.TABLE_NAME, correctedStrings);
-	    System.out.println("Debug: partition [ " + localPartition + " ] of [ " + noOfPartitions + " ]: Corrected a batch of strings -- " + correctedStrings.size());
+	        System.out.println("Debug: partition [ " + localPartition + " ] of [ " + noOfPartitions + " ]: Corrected a batch of strings -- " + correctedStrings.size());
             correctedStrings.clear();
         }
     }
@@ -295,15 +296,15 @@ public class CorrectionFunction implements Function {
      private static synchronized void guessMoreUntrustedQmers (final Map<String, Double> trustedQmers, double cutoff,
                                                   final double[][][] conditionalCounts)
      {
-        List<String> temp = new ArrayList<String>();
+        List<String> toRemove = new ArrayList<String>();
         for (Map.Entry<String, Double> entry: trustedQmers.entrySet()){
             double multiplicity = entry.getValue();
-            if (multiplicity != 1 && multiplicity < cutoff) temp.add(entry.getKey());
+            if (multiplicity != 1.1 && multiplicity < cutoff + 0.1 /* bias added to identify SNPs */) toRemove.add(entry.getKey());
         }
-        for (String key : temp)
+        for (String key : toRemove)
             trustedQmers.remove(key);
         
-        temp.clear();
+        toRemove.clear();
      }
 
 
