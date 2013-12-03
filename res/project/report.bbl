@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{McGregor}
 Andrew McGregor Ely~Porat Alexander~Andoni, Assaf~Goldberger.
@@ -30,6 +30,12 @@ Waterman~MS. Idury~RM.
 Nathan Marz.
 \newblock Storm, distributed and fault-tolerant realtime computation.
 \newblock {\em https://github.com/nathanmarz/storm/wiki/Tutorial}, 2012.
+
+\bibitem{hammer}
+Paul Medvedev, Eric Scott, Boyko Kakaradov, and Pavel Pevzner.
+\newblock Error correction of high-throughput sequencing datasets with
+  non-uniform coverage.
+\newblock {\em Bioinformatics}, 27(13):i137--i141, 2011.
 
 \bibitem{parallel}
 Liu W Müller-Wittig~W. Shi~H, Schmidt~B.

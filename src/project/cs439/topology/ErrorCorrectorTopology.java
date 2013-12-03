@@ -1,16 +1,18 @@
 package project.cs439.topology;
 
-import backtype.storm.utils.DRPCClient;
+import backtype.storm.tuple.Values;
 import com.google.common.collect.Lists;
 import project.cs439.function.CorrectionFunction;
-import project.cs439.query.StatisticsQuery;
-import project.cs439.query.StatisticsReducer;
+import project.cs439.query.*;
 import project.cs439.spout.SequenceReadStreamingSpout;
+import project.cs439.state.HistogramUpdater;
 import project.cs439.state.StatisticsState;
 import project.cs439.state.StatisticsUpdater;
 import storm.trident.Stream;
 
 import java.io.*;
+import java.text.MessageFormat;
+import java.util.Map;
 
 import backtype.storm.Config;
 import backtype.storm.LocalDRPC;
@@ -18,45 +20,77 @@ import storm.trident.TridentState;
 import backtype.storm.tuple.Fields;
 import backtype.storm.StormSubmitter;
 import storm.trident.TridentTopology;
+import storm.trident.operation.Function;
+import storm.trident.operation.TridentCollector;
+import storm.trident.operation.TridentOperationContext;
 import storm.trident.spout.ITridentSpout;
 import backtype.storm.generated.StormTopology;
 import storm.trident.spout.RichSpoutBatchExecutor;
+import storm.trident.tuple.TridentTuple;
 
 public class ErrorCorrectorTopology {
     public static StormTopology buildTopology (LocalDRPC drpc, String drpcFunction, final ITridentSpout reader,
                                                int readLength)
     {
+        int parallelismHint = 8;
         final TridentTopology topology = new TridentTopology();
         final Stream sequenceStream = topology.newStream("sequence-reader", reader).parallelismHint(1);
+        final Stream kMerStream = sequenceStream
+                .each(new Fields("rownum", "read", "quality"), new KmerSplitFilter(), new Fields("rownum", "kmer", "qmer"))
+                .parallelismHint(parallelismHint);
+
+        final TridentState histogram = kMerStream
+                .parallelismHint(parallelismHint)
+                .partitionBy(new Fields("kmer"))
+                .partitionPersist(new StatisticsState.HistogramStateFactory(1000000/parallelismHint, 15),
+                                  new Fields("rownum", "kmer", "qmer"),
+                                  new HistogramUpdater())
+                .parallelismHint(parallelismHint)
+        ;
 
         // In this state we save the histogram
         TridentState qMerStatistics = sequenceStream
                 .partitionBy(new Fields("read"))
-                .partitionPersist(new StatisticsState.StatisticsStateFactory(1000000, 15, readLength),
+                .partitionPersist(new StatisticsState.StatisticsStateFactory(1000000/parallelismHint, 15, readLength),
                                   new Fields("rownum", "read", "quality"), new StatisticsUpdater())
-                .parallelismHint(8)
-	;
+                .parallelismHint(parallelismHint)
+	    ;
 
         // Query the distributed histograms and aggregate.
-        topology
+        Stream combinedHistogram = topology.newDRPCStream(drpcFunction, drpc)
+                .broadcast() // for distributed query
+                .stateQuery(histogram,
+                            new Fields("args"),
+                            new HistogramQuery(),
+                            new Fields("partialHistogram"))
+                .project(new Fields("partialHistogram"))
+                .aggregate(new Fields("partialHistogram"),
+                           new HistogramCombiner(),
+                           new Fields("histogram"))
+        ;
+
+        // Query the distributed counts and aggregate.
+        Stream combinedCounts = topology
                 .newDRPCStream(drpcFunction, drpc).parallelismHint(1)
                 .broadcast()  // for distributed query
                 .stateQuery(qMerStatistics,
                             new Fields("args"),
                             new StatisticsQuery(), // Distributed Query for persistent state
-                            new Fields("partialHistogram", "conditionalCounts", "positionalCounts"))
-                .project(new Fields("partialHistogram", "conditionalCounts", "positionalCounts"))
-                .aggregate(new Fields("partialHistogram", "conditionalCounts", "positionalCounts"),
-                           new StatisticsReducer(), // Reduce statistics
+                            new Fields("conditionalCounts", "positionalCounts"))
+                .project(new Fields("conditionalCounts", "positionalCounts"))
+                .aggregate(new Fields("conditionalCounts", "positionalCounts"),
+                           new StatisticsCombiner(), // Combine statistics
                            new Fields("statistics"))
-                .parallelismHint(1)
-                .project(new Fields("statistics"))
-                .broadcast() // Broadcast statistics to all partitions
-                .each(new Fields("statistics"), new CorrectionFunction(),
-                      new Fields("result"))
-                .parallelismHint(8)
         ;
 
+        topology.multiReduce(combinedHistogram,
+                             combinedCounts,
+                             new MultiStatsReducer(),
+                             new Fields("histogram", "conditionalCounts", "positionalCounts"))
+        .each(new Fields("histogram", "conditionalCounts", "positionalCounts"),
+              new CorrectionFunction(),
+              new Fields("result"))
+        ;
         return topology.build();
     }
 
@@ -66,17 +100,6 @@ public class ErrorCorrectorTopology {
         int length = reader.readLine().length();
         reader.close();
         return length;
-    }
-
-    private static void cleanup (final DRPCClient client, final BufferedWriter writer) throws IOException {
-        writer.close();
-        client.close();
-    }
-
-    private static void saveResults (final BufferedWriter writer, final String result) throws IOException {
-        writer.append(result);
-        writer.newLine();
-        writer.flush();
     }
 
     public static Config getStormConfig () {
@@ -89,7 +112,7 @@ public class ErrorCorrectorTopology {
         conf.put("topology.trident.batch.emit.interval.millis", 100);
         conf.put(Config.DRPC_SERVERS, Lists.newArrayList("qp-hd3", "qp-hd4", "qp-hd5", "qp-hd6", "qp-hd7", "qp-hd8", "qp-hd9"));
         conf.put(Config.STORM_CLUSTER_MODE, "distributed");
-	conf.put(Config.NIMBUS_TASK_TIMEOUT_SECS, 120);
+	    conf.put(Config.NIMBUS_TASK_TIMEOUT_SECS, 120);
 //      conf.put(Config.STORM_ZOOKEEPER_RETRY_INTERVAL, 5000);
 //      conf.put(Config.STORM_ZOOKEEPER_CONNECTION_TIMEOUT, 180000);
 //      onf.put(Config.STORM_ZOOKEEPER_SESSION_TIMEOUT, 150000);
@@ -111,6 +134,40 @@ public class ErrorCorrectorTopology {
 
         StormTopology topology = buildTopology(null, "EC", sequenceReadBatchExecutor, getReadLength(args[0]));
         StormSubmitter.submitTopology("EC", config, topology);
+    }
+
+    private static class KmerSplitFilter implements Function {
+        int localPartition, noOfPartitions;
+        @Override
+        public void execute (final TridentTuple readStreamElement, final TridentCollector tridentCollector) {
+
+            int rowNum = readStreamElement.getIntegerByField("rownum");
+            String read = readStreamElement.getStringByField("read");
+            String qualities = readStreamElement.getStringByField("quality");
+
+            for (int i = 0; i + StatisticsState.k < read.length(); i++) {
+                String kmer = read.substring(i, i + StatisticsState.k);
+                String qmer = qualities.substring(i, i + StatisticsState.k);
+                //double averageQuality = StatisticsUpdater.getAverageQuality(qmer);
+
+                // confidence < 50%, this is a bit aggressive, but that's Ok.
+                // If we can't learn anything about these kmers, just discard them.
+                //if (averageQuality < 3)
+                //    continue;
+
+                tridentCollector.emit(new Values(rowNum, kmer, qmer));
+            }
+            System.out.println(MessageFormat.format("Debug: Kmer Split at partition [{0}] of [{1}]", localPartition, noOfPartitions));
+        }
+
+        @Override
+        public void prepare (final Map map, final TridentOperationContext tridentOperationContext) {
+            localPartition = tridentOperationContext.getPartitionIndex();
+            noOfPartitions = tridentOperationContext.numPartitions();
+        }
+
+        @Override
+        public void cleanup () {}
     }
 }
 

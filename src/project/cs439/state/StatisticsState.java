@@ -18,10 +18,36 @@ import static com.google.common.hash.BloomFilter.create;
 
 
 public class StatisticsState implements State, Serializable {
+    public static class Histogram implements State {
+        public Histogram (int expectedNumberOfElements, int k) {
+            StatisticsState.k = k;
+            bloomFilter = create(Funnels.stringFunnel(), expectedNumberOfElements, 0.001);
+            trustedQmers = new ConcurrentHashMap<String, Double>(100);
+        }
+
+        public BloomFilter<CharSequence> getBloomFilter () {
+            return bloomFilter;
+        }
+
+        public Map<String, Double> getTrustedQmers () {
+            return trustedQmers;
+        }
+
+        @Override
+        public void beginCommit (final Long aLong) {}
+
+        @Override
+        public void commit (final Long aLong) {}
+
+        protected Map<String, Double>                              trustedQmers;
+        private   com.google.common.hash.BloomFilter<CharSequence> bloomFilter;
+    }
+
+
     public StatisticsState () throws SQLException {
         StatisticsState.k = 15;
-        bloomFilter = create(Funnels.stringFunnel(), 100000, 0.001);
-        trustedQmers = new ConcurrentHashMap<String, Double>(100);
+/*        bloomFilter = create(Funnels.stringFunnel(), 100000, 0.001);
+        trustedQmers = new ConcurrentHashMap<String, Double>(100);*/
 
         positionalQualityCounts = new double[100][5]; //P,O
         positionalConditionalQualityCounts = new double[100][5][5]; // P,A,O
@@ -32,8 +58,8 @@ public class StatisticsState implements State, Serializable {
 
     public StatisticsState (int expectedNumberOfElements, int k, int readLength) throws SQLException {
         StatisticsState.k = k;
-        bloomFilter = create(Funnels.stringFunnel(), expectedNumberOfElements, 0.001);
-        trustedQmers = new Hashtable<String, Double>(100);
+/*        bloomFilter = create(Funnels.stringFunnel(), expectedNumberOfElements, 0.001);
+        trustedQmers = new ConcurrentHashMap<String, Double>(100);*/
 
         positionalQualityCounts = new double[readLength][5]; //P,O
         positionalConditionalQualityCounts = new double[readLength][5][5]; // P,A,O
@@ -154,7 +180,6 @@ public class StatisticsState implements State, Serializable {
     }
 
 
-
     public static void updateCorrections (final Connection jdbcConnection,
                                           String tableName,
                                           Map<Integer, String> corrections) throws
@@ -231,13 +256,13 @@ public class StatisticsState implements State, Serializable {
         }
     }
 
-    public BloomFilter<CharSequence> getBloomFilter () {
+   /* public BloomFilter<CharSequence> getBloomFilter () {
         return bloomFilter;
     }
 
     public Map<String, Double> getTrustedQmers () {
         return trustedQmers;
-    }
+    }*/
 
     @Override
     public void commit (final Long aLong) {
@@ -279,28 +304,31 @@ public class StatisticsState implements State, Serializable {
         }
     }
 
-    public static StateFactory FACTORY = new StateFactory() {
-        public State makeState (Map conf, IMetricsContext metrics, int partitionIndex, int numPartitions) {
-            try {
-                return new StatisticsState();
-            } catch ( SQLException e ) {
-                e.printStackTrace();
-            }
-            return null;
+    public static class HistogramStateFactory implements StateFactory {
+
+        private final int k, expectedNoOfElements;
+
+        public HistogramStateFactory (int expectedNoOfElements, int k) {
+            this.expectedNoOfElements = expectedNoOfElements;
+            this.k = k;
         }
-    };
+
+        public State makeState (Map conf, IMetricsContext metrics, int partitionIndex, int numPartitions) {
+            return new Histogram(expectedNoOfElements, k);
+        }
+    }
+
+    public  double[][]   positionalQualityCounts;
+    public  double[][][] positionalConditionalQualityCounts;
+    private Connection   jdbcConnection;
+
+    private       Set<Integer> seenTuples;
 
     public static int          k;
-    public        double[][]   positionalQualityCounts;
-    public        double[][][] positionalConditionalQualityCounts;
-
-    private Connection                                       jdbcConnection;
-    private Set<Integer>                                     seenTuples;
-    private Map<String, Double>                              trustedQmers;
-    private com.google.common.hash.BloomFilter<CharSequence> bloomFilter;
-
     public static final  String TABLE_NAME  = "ecoli";
+
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     private static final String GENERAL_URL = "jdbc:mysql://qp-hd10:3306";
     private static final String DB_URL      = "jdbc:mysql://qp-hd10:3306/datasets?useServerPrepStmts=false&rewriteBatchedStatements=true";
+
 }

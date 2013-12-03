@@ -1,6 +1,8 @@
 This is BibTeX, Version 0.99dThe top-level auxiliary file: report.aux
 The style file: plain.bst
 Database file #1: bibliography.bib
+Warning--I'm ignoring hammer's extra "title" field
+--line 96 of file bibliography.bib
 Too many commas in name 1 of "Shi H, Schmidt B, Liu W, Müller-Wittig W." for entry parallel
 while executing---line 1049 of file plain.bst
 Too many commas in name 1 of "Alexander Andoni, Assaf Goldberger, Andrew McGregor, Ely Porat" for entry McGregor

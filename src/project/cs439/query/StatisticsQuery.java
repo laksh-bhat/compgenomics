@@ -21,8 +21,7 @@ public class StatisticsQuery extends BaseQueryFunction<StatisticsState, List<Obj
     public List<List<Object>> batchRetrieve (final StatisticsState abundanceHistogram, final List<TridentTuple> tridentTuples) {
         List<List<Object>> listList = new ArrayList<List<Object>>();
         for (int i = 0; i < tridentTuples.size(); i++){
-            List<Object> list = new ArrayList<Object>(3);
-            list.add(abundanceHistogram.getTrustedQmers());
+            List<Object> list = new ArrayList<Object>(2);
             list.add(abundanceHistogram.positionalConditionalQualityCounts);
             list.add(abundanceHistogram.positionalQualityCounts);
             listList.add(list);
@@ -33,6 +32,6 @@ public class StatisticsQuery extends BaseQueryFunction<StatisticsState, List<Obj
     @Override
     public void execute (final TridentTuple objects, final List<Object> list, final TridentCollector collector) {
         if(list != null) 
-            collector.emit(new Values(list.get(0), list.get(1), list.get(2)));
+            collector.emit(new Values(list.get(0), list.get(1)));
     }
 }

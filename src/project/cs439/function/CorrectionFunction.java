@@ -1,11 +1,10 @@
 package project.cs439.function;
 
 import project.cs439.state.StatisticsState;
-import storm.trident.operation.Function;
-import storm.trident.operation.TridentCollector;
-import storm.trident.operation.TridentOperationContext;
+import storm.trident.operation.*;
 import storm.trident.tuple.TridentTuple;
 import backtype.storm.tuple.Values;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,14 +27,12 @@ public class CorrectionFunction implements Function {
 
         ResultSet resultSet = null;
         Connection dbConnection = null;
-
-        List<Object> statistics = (List<Object>) tuple.getValueByField("statistics");
-        Map<String, Double> trustedQmers = (Map<String, Double>) statistics.get(0);
-        double[][][] conditionalProbs = (double[][][]) statistics.get(1);
+        Map<String, Double> trustedQmers = (Map<String, Double>) tuple.getValueByField("histogram");
+        double[][][] conditionalProbs = (double[][][]) tuple.getValueByField("conditionalCounts");
         // These are not real probabilities. We have to normalize them to make them proper probabilities.
         // But that's unnecessary for our purposes.
 
-        if(conditionalProbs == null || trustedQmers == null)
+        if (conditionalProbs == null || trustedQmers == null)
             return;
 
         guessMoreUntrustedQmers(trustedQmers, 5D, conditionalProbs);
@@ -90,9 +87,9 @@ public class CorrectionFunction implements Function {
                                final Connection dbConnection,
                                final Map<Integer, String> correctedStrings) throws SQLException
     {   // write in batches of 3000
-        if (correctedStrings.size() >= 3000 || resultSet.isLast()){
+        if (correctedStrings.size() >= 3000 || resultSet.isLast()) {
             StatisticsState.updateCorrections(dbConnection, StatisticsState.TABLE_NAME, correctedStrings);
-	        System.out.println("Debug: partition [ " + localPartition + " ] of [ " + noOfPartitions + " ]: Corrected a batch of strings -- " + correctedStrings.size());
+            System.out.println("Debug: partition [ " + localPartition + " ] of [ " + noOfPartitions + " ]: Corrected a batch of strings -- " + correctedStrings.size());
             correctedStrings.clear();
         }
     }
@@ -108,7 +105,7 @@ public class CorrectionFunction implements Function {
     private static CharSequence correctMultipleErrorsIfYouCan (final double[][][] conditionalProbs,
                                                                final Map<String, Double> trustedQmers,
                                                                CharSequence seqRead, final int start, final int end)
-    {	// exponential problem. 2 cases. region reaches the end of read or not.
+    {    // exponential problem. 2 cases. region reaches the end of read or not.
         // Obs: In latter case, the last nucleotide of the last trusted k-mer must belong to trusted region
         if (end == seqRead.length()) {
             StringBuilder sb = new StringBuilder().append(seqRead);
@@ -293,19 +290,20 @@ public class CorrectionFunction implements Function {
      * @param conditionalCounts
      */
 
-     private static synchronized void guessMoreUntrustedQmers (final Map<String, Double> trustedQmers, double cutoff,
-                                                  final double[][][] conditionalCounts)
-     {
+    private static synchronized void guessMoreUntrustedQmers (final Map<String, Double> trustedQmers, double cutoff,
+                                                              final double[][][] conditionalCounts)
+    {
         List<String> toRemove = new ArrayList<String>();
-        for (Map.Entry<String, Double> entry: trustedQmers.entrySet()){
+        for (Map.Entry<String, Double> entry : trustedQmers.entrySet()) {
             double multiplicity = entry.getValue();
-            if (multiplicity != 1.1 && multiplicity < cutoff + 0.1 /* bias added to identify SNPs */) toRemove.add(entry.getKey());
+            if (multiplicity != 1.1 && multiplicity < cutoff + 0.1 /* bias added to identify SNPs */)
+                toRemove.add(entry.getKey());
         }
         for (String key : toRemove)
             trustedQmers.remove(key);
-        
+
         toRemove.clear();
-     }
+    }
 
 
     /**

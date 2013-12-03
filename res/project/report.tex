@@ -146,6 +146,23 @@
   year={2012}
 }
 
+@article{hammer,
+  title = {Error correction of high-throughput sequencing datasets with non-uniform coverage},
+  author = {Medvedev, Paul and Scott, Eric and Kakaradov, Boyko and Pevzner, Pavel},
+  biburl = {http://www.bibsonomy.org/bibtex/235cb14c5e3175cd5b12b1e3316385911/ytyoun},
+  doi = {10.1093/bioinformatics/btr208},
+  journal = {Bioinformatics},
+  keywords = {NGS error-correction hamming},
+  number = 13,
+  pages = {i137-i141},
+  timestamp = {2013-03-12T04:47:36.000+0100},
+  title = {Error correction of high-throughput sequencing datasets with non-uniform coverage},
+  volume = 27,
+  year = 2011
+}
+
+
+
 \end{filecontents}
 
 \begin{document}
@@ -167,17 +184,18 @@ The sequence data produced by next-generation sequencing technologies are error-
 \end{abstract}
 
 \section{Introduction}
-We saw earlier in the course that Sanger reads, typically 700 -- 1000 bp in length, are long enough for overlaps to be reliable indicators of genomic co-location, which are used in the overlap-layout-consensus approach for genome assembly. However, the de novo inference of a genome without the aid of a reference genome, is a hard problem to solve. The overlap-layout-consensus approach does poorly with the much shorter reads of second-generation sequencing platforms; for e.g. DNA sequence reads from Illumina sequencers, one of the most successful of the second-generation technologies, range from 35 to 125 bp in length. In this context, de Bruijn graph \cite{debruijn} based formulations that reconstruct the genome as a path in a graph perform better due to their more global focus and ability to naturally accommodate paired read information. As a result, it has become de facto model for building short-read genome assemblers. \\
+We saw earlier in the course that Sanger reads, typically 700 -- 1000 bp in length, are long enough for overlaps to be reliable indicators of genomic co-location, which are used in the overlap-layout-consensus approach for genome assembly. However, the de novo inference of a genome without the aid of a reference genome, is a hard problem to solve. The overlap-layout-consensus approach does poorly with the much shorter reads of second-generation sequencing platforms; for e.g. DNA sequence reads from Illumina sequencers, one of the most successful of the second-generation technologies, range from 35 to 125 bp in length. In this context, de Bruijn graph \cite{debruijn} based formulations that reconstruct the genome as a path in a graph perform better due to their more global focus and ability to naturally accommodate paired read information. As a result, it has become de facto model for building short-read genome assemblers. In this setting it is worth talking about the correctness of these second-generation sequencers. It is well known that the sequence fidelity of these sequencers are high as they have a relatively low substitution error rate of 0.5--2.5 (empirically shown in \cite{quake}). Errors are attributed to templates getting “out of sync,” by missing an incorporation or by incorporating 2 or more nucleotides at once. These errors increase in the later sequencing cycles as proportionally more templates fall out of sync and hence their frequency at the 3' ends of reads is higher. This, as we shall see later in section \ref{ec}, becomes an important property to be considered for maximum likelihood estimation during error correction.\\
 
-In this setting it is worth talking about the correctness of these second-generation sequencers. It is well known that the sequence fidelity of these sequencers are high - they have a substitution error rate of 0.5--2.5 (empirically shown in \cite{quake}). Errors are attributed to templates getting “out of sync,” by missing an incorporation or by incorporating 2 or more nucleotides at once. These errors increase in the later sequencing cycles as proportionally more templates fall out of sync and hence their frequency at the 3' ends of reads is higher. This, as we shall see, becomes an important property to be considered for maximum likelihood estimation during error correction.\\
-
+\section{Background}
+\subsection{Error Correction \label{ec}}
 Error correction has long been recognized as a critical and difficult part of the so called graph-based assemblers (de Bruijn graph). It also has significant impact on alignment and in other next-generation sequencing applications such as re-sequencing. Sequencing errors complicate analysis, which normally requires that reads be aligned to each other during assemble or to a reference genome for single-nucleotide polymorphism (SNP) detection. Mistakes during the overlap computation in genome assembly may leave gaps in the assembly, while false overlaps may create ambiguous paths \cite{quake}. In genome re-sequencing projects, reads are aligned to a reference genome, usually allowing for a fixed number of mismatches due to either SNPs or sequencing errors. In most cases, the reference genome and the genome being newly sequenced will differ, sometimes substantially. Variable regions are more difficult to align because mismatches from both polymorphisms and sequencing errors occur, but if errors can be eliminated, more reads will align and the sensitivity for variant detection will improve.
 
 Fortunately, the low cost of second-generation sequencing makes it possible to obtain highly redundant coverage of a genome, which can be used to correct sequencing errors in the reads before assembly or alignment. But, this significantly increases the size of the dataset. In order to deal with the computational challenges of working with such large data sets, a number of methods have been proposed for storing k-mers efficiently. Most de Bruijn graph assemblers store k-mers using 2 bits to encode each nucleotide, so that each k-mer takes $k/4$ bytes. The k-mers are then stored in a hash table, usually with some associated information such as coverage and neighborhood information in the de Bruijn graph. A complementary strategy for reducing memory usage is based on the observation that in current data sets, a large fraction of the observed k-mers may arise from sequencing errors. Most of these occur uniquely in the data, and hence they greatly increase the memory requirements of de novo assembly without adding much information. For this reason, it is frequently helpful to either discard unique k-mers prior to building the graph, or to attempt to correct them if they are similar to other, much more 'abundant', k-mers. A number of related methods have been proposed to perform this error correction step, all guided by the goal of finding the minimum number of single base edits (edit distance) to the read that make all k-mers trusted.
 
+A common approach of error correction of reads is to determine a threshold and correct k-mers whose multiplicities fall below a threshold \cite{chikhi,quake,musket}. Choosing an appropriate threshold is crucial since a low threshold will result in too many uncorrected errors, while a high threshold will result in the loss of correct k-mers. The histogram of the multiplicities of k-mers will show a mixture of two distributions — that of the error-free k-mers, and that of the erroneous k-mers. When the coverage is high and uniform, these distributions are centered far apart and can be separated without much loss using a cutoff threshold; such methods therefore achieve excellent results \cite{quake}. 
 
-
-\section{Background}
+There are some papers that develop methods to correct errors without an assumption of non-uniform coverage. One such method is Hammer \cite{hammer}
+Consider two k-mers that are within a small Hamming distance and present in the read dataset. If our genome does not contain many non-exact repeats, then it is likely that both of these k-mers were generated by the k-mer among them that has higher multiplicity. In this way, we can correct the lower multiplicity k-mer to the higher multiplicity one, without relying on uniformity. This can be further generalized by considering the notion of the Hamming graph, whose vertices are the distinct k-mers (annotated with their multiplicities) and edges connect k-mers with a Hamming distance less than or equal to a parameter τ. Hammer is based on a combination of the Hamming graph and a simple probabilistic model described in great detail in \cite{hammer}.
 
 \subsection{Bloom-Filter}
 A Bloom filter \cite{bloom}, in simple terms, is a data structure designed to tell us, rapidly and memory-efficiently, whether an element is present in a set. The price paid for this efficiency is that a Bloom filter is probabilistic in nature: it tells us that the element is either definitely not in the set or 'may be' in the set.
