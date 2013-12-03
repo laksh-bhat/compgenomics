@@ -2,6 +2,9 @@
   <dictionary name="lbhat">
     <words>
       <w>comparisions</w>
+      <w>phred</w>
+      <w>rownum</w>
+      <w>seqread</w>
       <w>subsequence</w>
     </words>
   </dictionary>

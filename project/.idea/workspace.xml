@@ -85,7 +85,7 @@
     <file path="/CorrectErrors.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385323066762" ignored="false" />
     <file path="/AxFinderTransactional.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385347418474" ignored="false" />
     <file path="/AbundanceStatistics.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385361114104" ignored="false" />
-    <file path="/CorrectionFunction.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385958900347" ignored="false" />
+    <file path="/CorrectionFunction.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1386032665774" ignored="false" />
     <file path="/StatisticsState.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385958817889" ignored="false" />
     <file path="/Dummy.txt" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385889421153" ignored="false" />
     <file path="/TestCorrectors.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385540927306" ignored="false" />
@@ -141,6 +141,7 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint url="file://$PROJECT_DIR$/../src/fileutils/csvCleaner.java" line="25" class="fileutils.csvCleaner" package="fileutils">
         <option name="ENABLED" value="true" />
@@ -173,7 +174,6 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </line_breakpoints>
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -186,10 +186,8 @@
       <file leaf-file-name="ErrorCorrectorTopology.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/project/cs439/topology/ErrorCorrectorTopology.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="49" column="44" selection-start="2308" selection-end="2308" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state line="54" column="66" selection-start="2613" selection-end="2613" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -206,7 +204,7 @@
       <file leaf-file-name="StatisticsQuery.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/project/cs439/query/StatisticsQuery.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="34" column="113" selection-start="1282" selection-end="1282" vertical-scroll-proportion="0.0">
+            <state line="18" column="13" selection-start="399" selection-end="399" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -224,7 +222,7 @@
       <file leaf-file-name="CorrectionFunction.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../src/project/cs439/function/CorrectionFunction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="84" selection-start="672" selection-end="672" vertical-scroll-proportion="0.37777779">
+            <state line="32" column="98" selection-start="1249" selection-end="1249" vertical-scroll-proportion="0.6925926">
               <folding />
             </state>
           </provider>
@@ -252,9 +250,7 @@
         <entry file="file://$PROJECT_DIR$/../src/project/cs439/state/StatisticsUpdater.java">
           <provider selected="true" editor-type-id="text-editor">
             <state line="144" column="0" selection-start="6771" selection-end="6945" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#827#858#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -278,13 +274,13 @@
         <option value="$PROJECT_DIR$/../src/project/cs439/state/ErrorModel.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/test/TestCorrectors.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/query/statisticsQuery.java" />
-        <option value="$PROJECT_DIR$/../src/project/cs439/query/StatisticsQuery.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/spout/SequenceReadStreamingSpout.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/state/StatisticsState.java" />
-        <option value="$PROJECT_DIR$/../src/project/cs439/function/CorrectionFunction.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/topology/ErrorCorrectorTopology.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/query/StatisticsReducer.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/state/StatisticsUpdater.java" />
+        <option value="$PROJECT_DIR$/../src/project/cs439/query/StatisticsQuery.java" />
+        <option value="$PROJECT_DIR$/../src/project/cs439/function/CorrectionFunction.java" />
       </list>
     </option>
   </component>
@@ -434,12 +430,12 @@
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="MemberChooser.showClasses" value="true" />
     <property name="FullScreen" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -567,19 +563,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -605,6 +588,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -700,6 +696,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32367972" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -709,7 +706,6 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270869" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32367972" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -827,41 +823,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../src/project/cs439/topology/ErrorCorrectorTopology.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="44" selection-start="2308" selection-end="2308" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/../lib/storm-0.8.3-wip3.jar!/storm/trident/operation/ReducerAggregator.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="12" selection-start="245" selection-end="251" vertical-scroll-proportion="-5.44">
-          <folding />
-        </state>
+        <state line="9" column="12" selection-start="245" selection-end="251" vertical-scroll-proportion="-5.44" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../src/project/cs439/state/StatisticsUpdater.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="144" column="0" selection-start="6771" selection-end="6945" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#827#858#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../src/project/cs439/query/StatisticsReducer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="17" column="85" selection-start="409" selection-end="409" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/project/cs439/query/StatisticsQuery.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="113" selection-start="1282" selection-end="1282" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -880,9 +856,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../src/project/cs439/query/StatisticsQuery.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="13" selection-start="399" selection-end="399" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/project/cs439/topology/ErrorCorrectorTopology.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="54" column="66" selection-start="2613" selection-end="2613" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../src/project/cs439/function/CorrectionFunction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="84" selection-start="672" selection-end="672" vertical-scroll-proportion="0.37777779">
+        <state line="32" column="98" selection-start="1249" selection-end="1249" vertical-scroll-proportion="0.6925926">
           <folding />
         </state>
       </provider>

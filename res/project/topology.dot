@@ -1,0 +1,21 @@
+
+ digraph G {
+ size ="4,4";
+ edge [color= blue];
+ fastQspout -> BloomCounter [label="(partition) 1:32"];
+ BloomCounter -> StatisticsState[label="32:32"];
+ BloomCounter -> PersistentStore[label="(MySql/Impala) 32:~32"];
+
+DrpcSpout-> StatisticsState[label="(broadcast) 1:32"];
+StatisticsState -> StatisticsAggregator [label="32:1", color=red];
+ 
+PersistentStore -> Corrector[label="~32:32"];
+StatisticsAggregator -> Corrector[label="(broadcast) 1:32",  color=red];
+Corrector -> PersistentStore[label="32:~32"];
+
+fastQspout[shape=box, color=green];
+DrpcSpout[shape=box, color=green];
+BloomCounter[shape=diamond];
+StatisticsAggregator[shape=diamond];
+Corrector[shape=diamond];
+ }

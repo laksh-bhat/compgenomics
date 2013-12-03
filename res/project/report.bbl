@@ -26,6 +26,11 @@ Waterman~MS. Idury~RM.
 \newblock A new algorithm for dna sequence assembly.
 \newblock {\em PubMed Central}, 2(2):291--306, 1995.
 
+\bibitem{storm}
+Nathan Marz.
+\newblock Storm, distributed and fault-tolerant realtime computation.
+\newblock {\em https://github.com/nathanmarz/storm/wiki/Tutorial}, 2012.
+
 \bibitem{parallel}
 Liu W Müller-Wittig~W. Shi~H, Schmidt~B.
 \newblock A parallel algorithm for error correction in high-throughput

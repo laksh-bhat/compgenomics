@@ -34,10 +34,10 @@ public class CorrectionFunction implements Function {
         // But that's unnecessary for our purposes.
         double[][][] conditionalProbs = (double[][][]) statistics.get(1);
 
-        if(conditionalProbs == null || trustedQmers == null){
-            collector.emit(new Values("nothing to return"));
+        if(conditionalProbs == null || trustedQmers == null)
             return;
-        }
+
+        guessMoreUntrustedQmers(trustedQmers, 5D, conditionalProbs);
 
         try {
             dbConnection = StatisticsState.getNewDatabaseConnection();
@@ -48,23 +48,14 @@ public class CorrectionFunction implements Function {
             if (noOfPartitions != localPartition + 1)
                 endReadIndex = (localPartition + 1) * totalReadsProcessedByCurrentPartition;
             resultSet = StatisticsState.getAll(dbConnection, StatisticsState.TABLE_NAME, startReadIndex, endReadIndex);
-            Map<Integer, String> correctedStrings = new ConcurrentHashMap<Integer, String>();
+            Map<Integer, String> batchOfCorrections = new ConcurrentHashMap<Integer, String>();
             while (resultSet.next()) {
                 int rowNum = resultSet.getInt("rownum");
                 CharSequence seqRead = resultSet.getString("seqread");
                 CharSequence qualities = resultSet.getString("phred");
-
-                List<List<Integer>> untrustedRegions = findUntrustedIntersections(seqRead, qualities, trustedQmers, StatisticsState.k);
-                for (List<Integer> region : untrustedRegions) {
-                    int start = region.get(0), end = region.get(1);
-                    if (end - start == StatisticsState.k && end != seqRead.length()) { // case1, size of the region is k
-                        seqRead = correctSingleNucleotideError(conditionalProbs, trustedQmers, seqRead, start, end);
-                    } else {  // case 2 longer region.
-                        seqRead = correctMultipleErrorsIfYouCan(conditionalProbs, trustedQmers, seqRead, start, end);
-                    }
-                }
-                correctedStrings.put(rowNum, seqRead.toString());
-                preserveInDb(resultSet, dbConnection, correctedStrings);
+                seqRead = correctErrors(trustedQmers, conditionalProbs, seqRead, qualities);
+                batchOfCorrections.put(rowNum, seqRead.toString());
+                preserveInDb(resultSet, dbConnection, batchOfCorrections);
             }
         } catch ( SQLException e ) {
             e.printStackTrace();
@@ -78,10 +69,26 @@ public class CorrectionFunction implements Function {
         }
     }
 
+    private CharSequence correctErrors (final Map<String, Double> trustedQmers,
+                                        final double[][][] conditionalProbs,
+                                        CharSequence seqRead, final CharSequence qualities)
+    {
+        List<List<Integer>> untrustedRegions = findUntrustedIntersections(seqRead, qualities, trustedQmers, StatisticsState.k);
+        for (List<Integer> region : untrustedRegions) {
+            int start = region.get(0), end = region.get(1);
+            if (end - start == StatisticsState.k && end != seqRead.length()) { // case1, size of the region is k
+                seqRead = correctSingleNucleotideError(conditionalProbs, trustedQmers, seqRead, start, end);
+            } else {  // case 2 longer region.
+                seqRead = correctMultipleErrorsIfYouCan(conditionalProbs, trustedQmers, seqRead, start, end);
+            }
+        }
+        return seqRead;
+    }
+
     private void preserveInDb (final ResultSet resultSet,
                                final Connection dbConnection,
                                final Map<Integer, String> correctedStrings) throws SQLException
-    {// write in batches of 3000
+    {   // write in batches of 3000
         if (correctedStrings.size() >= 3000 || resultSet.isLast()){
             StatisticsState.updateCorrections(dbConnection, StatisticsState.TABLE_NAME, correctedStrings);
 	    System.out.println("Debug: partition [ " + localPartition + " ] of [ " + noOfPartitions + " ]: Corrected a batch of strings -- " + correctedStrings.size());
