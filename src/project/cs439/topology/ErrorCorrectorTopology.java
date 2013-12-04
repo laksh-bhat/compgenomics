@@ -32,10 +32,12 @@ public class ErrorCorrectorTopology {
     public static StormTopology buildTopology (LocalDRPC drpc, String drpcFunction, final ITridentSpout reader,
                                                int readLength)
     {
-        int parallelismHint = 16;
+        int parallelismHint = 64;
         final TridentTopology topology = new TridentTopology();
-        final Stream sequenceStream = topology.newStream("sequence-reader", reader).parallelismHint(1);
-        final Stream kMerStream = sequenceStream.parallelismHint(1)
+        final Stream sequenceStream = topology.newStream("sequence-reader", reader);
+        final Stream kMerStream = sequenceStream
+		.parallelismHint(1)
+		.shuffle()
                 .each(new Fields("rownum", "read", "quality"), new KmerSplitFilter(), new Fields("kmer", "qmer"))
 		.project(new Fields("rownum", "kmer", "qmer"))
                 .parallelismHint(parallelismHint);
@@ -89,10 +91,11 @@ public class ErrorCorrectorTopology {
                              combinedCounts,
                              new MultiStatsReducer(),
                              new Fields("histogram", "conditionalCounts", "positionalCounts"))
+		.broadcast()
                 .each(new Fields("histogram", "conditionalCounts", "positionalCounts"),
                       new CorrectionFunction(),
                       new Fields("result"))
-         	.parallelismHint(parallelismHint)
+         	.parallelismHint(parallelismHint * 2)
         ;
 
         return topology.build();
@@ -111,8 +114,8 @@ public class ErrorCorrectorTopology {
 //      conf.setDebug(true);
         conf.setNumAckers(8);
         conf.setNumWorkers(8);
-        conf.setMaxSpoutPending(32);
-        conf.put("topology.spout.max.batch.size", 25000);
+        //conf.setMaxSpoutPending(1000);
+        conf.put("topology.spout.max.batch.size", 50000);
         conf.put("topology.trident.batch.emit.interval.millis", 500);
         conf.put(Config.DRPC_SERVERS, Lists.newArrayList("qp-hd3", "qp-hd4", "qp-hd5", "qp-hd6", "qp-hd7", "qp-hd8", "qp-hd9"));
         conf.put(Config.STORM_CLUSTER_MODE, "distributed");
