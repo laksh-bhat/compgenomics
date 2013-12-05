@@ -91,11 +91,11 @@ public class ErrorCorrectorTopology {
                              combinedCounts,
                              new MultiStatsReducer(),
                              new Fields("histogram", "conditionalCounts", "positionalCounts"))
-		.broadcast()
+		        .broadcast()
                 .each(new Fields("histogram", "conditionalCounts", "positionalCounts"),
                       new CorrectionFunction(),
                       new Fields("result"))
-         	.parallelismHint(parallelismHint * 2)
+         	    .parallelismHint(parallelismHint * 2)
         ;
 
         return topology.build();

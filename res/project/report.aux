@@ -39,8 +39,14 @@
 \@writefile{toc}{\contentsline {section}{\numberline {3}Methods and Software}{4}{section.3}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Storm Topology}{4}{subsection.3.1}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.1}Storing and Counting k-mers using Bloom Filter}{4}{subsubsection.3.1.1}}
+\citation{chikhi,quake}
+\citation{quake}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \relax \fontsize  {6}{7}\selectfont  {The storm pipeline used for error correction. The nodes in green are the spouts, the diamond shaped nodes are the bolts. Streams are represented by arrows and are annotated with the source and destination cardinalities.}}}{5}{figure.2}}
 \newlabel{overflow}{{2}{5}{\tiny {The storm pipeline used for error correction. The nodes in green are the spouts, the diamond shaped nodes are the bolts. Streams are represented by arrows and are annotated with the source and destination cardinalities.}}{figure.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Localizing errors}{5}{subsection.3.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \relax \fontsize  {6}{7}\selectfont  {Trusted (green) and untrusted (red) 15-mers are drawn against a 36 bp read. In (a), the intersection of the untrusted k-mers localizes the sequencing error to the highlighted column. In (b), the untrusted k-mers reach the edge of the read, so we must consider the bases at the edge in addition to the intersection of the untrusted k-mers. However, in most cases, we can further localize the error by considering all bases covered by the right-most trusted k-mer to be correct and removing them from the error region as shown in (c). }}}{6}{figure.3}}
+\newlabel{lc}{{3}{6}{\tiny {Trusted (green) and untrusted (red) 15-mers are drawn against a 36 bp read. In (a), the intersection of the untrusted k-mers localizes the sequencing error to the highlighted column. In (b), the untrusted k-mers reach the edge of the read, so we must consider the bases at the edge in addition to the intersection of the untrusted k-mers. However, in most cases, we can further localize the error by considering all bases covered by the right-most trusted k-mer to be correct and removing them from the error region as shown in (c). }}{figure.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Sequencing error probability model : Naive Bayes}{6}{subsection.3.3}}
 \citation{*}
 \bibdata{bibliography}
 \bibcite{McGregor}{1}
@@ -54,9 +60,9 @@
 \bibcite{reptile}{9}
 \bibcite{musket}{10}
 \bibstyle{plain}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Results}{6}{section.4}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusions}{6}{section.5}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Advisors}{6}{section.6}}
-\newlabel{LastPage}{{}{6}{}{page.6}{}}
-\xdef\lastpage@lastpage{6}
-\xdef\lastpage@lastpageHy{6}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Results}{7}{section.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusions}{7}{section.5}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Advisors}{7}{section.6}}
+\newlabel{LastPage}{{}{7}{}{page.7}{}}
+\xdef\lastpage@lastpage{7}
+\xdef\lastpage@lastpageHy{7}
