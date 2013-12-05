@@ -2,20 +2,33 @@
  digraph G {
  size ="4,4";
  edge [color= blue];
- fastQspout -> BloomCounter [label="(partition) 1:32"];
- BloomCounter -> StatisticsState[label="32:32"];
- BloomCounter -> PersistentStore[label="(MySql/Impala) 32:~32"];
+ fastQspout -> KmerSplit[label="(Shuffle)1:32", penwidth=3];
+ fastQspout -> StatisticsCalculator[label="(Shuffle)1:32", penwidth=3];
+ StatisticsCalculator->StatisticsState[label="32:32", penwidth=3];
+ KmerSplit -> BloomCounter [label="(partitionBy) 32:32", penwidth=3];
+ BloomCounter -> Histogram[label="32:32", penwidth=3];
+ BloomCounter -> PersistentStore[label="(MySql/Impala) 32:~32", penwidth=3];
 
-DrpcSpout-> StatisticsState[label="(broadcast) 1:32"];
-StatisticsState -> StatisticsAggregator [label="32:1", color=red];
+DrpcSpout-> StatisticsState[label="(broadcast) 1:32", penwidth=3];
+DrpcSpout -> Histogram[label="(broadcast) 1:32", penwidth=3];
+Histogram -> HistogramCombiner[label="32:1", color=red, penwidth=3];
+StatisticsState -> StatisticsAggregator [label="32:1", color=red, penwidth=3];
  
-PersistentStore -> Corrector[label="~32:32"];
-StatisticsAggregator -> Corrector[label="(broadcast) 1:32",  color=red];
-Corrector -> PersistentStore[label="32:~32"];
+PersistentStore -> Corrector[label="~32:32", penwidth=3];
+StatisticsAggregator -> Corrector[label="(broadcast) 1:32",  color=red, penwidth=3];
+HistogramCombiner -> Corrector[label="(broadcast) 1:32",  color=red, penwidth=3];
+Corrector -> PersistentStore[label="32:~32", penwidth=3];
 
-fastQspout[shape=box, color=green];
-DrpcSpout[shape=box, color=green];
-BloomCounter[shape=diamond];
-StatisticsAggregator[shape=diamond];
-Corrector[shape=diamond];
+fastQspout[shape=box, color=green, penwidth=3];
+DrpcSpout[shape=box, color=green, penwidth=3];
+BloomCounter[shape=diamond, penwidth=3];
+StatisticsAggregator[shape=diamond, penwidth=3];
+Corrector[shape=diamond, penwidth=3];
+StatisticsCalculator[shape=diamond, penwidth=3];
+KmerSplit[shape=diamond, penwidth=3];
+HistogramCombiner[shape=diamond, penwidth=3];
+Histogram[style=filled,fillcolor="#FCD975", penwidth=2]
+StatisticsState[style=filled,fillcolor="#FCD975", penwidth=2]
+PersistentStore[style=filled,fillcolor="#9ACEEB" , penwidth=2]
+
  }

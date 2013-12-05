@@ -14,42 +14,21 @@ import java.io.IOException;
  */
 public class DrpcQueryRunner {
     public static void main (final String[] args) throws IOException, TException, DRPCExecutionException {
-        if (args.length < 1){
+        if (args.length < 1) {
             System.err.println("Where are the arguments?");
-            return ;
-	}
+            return;
+        }
 
-        long duration = 0;
-        final DRPCClient drpcClient1 = new DRPCClient("qp-hd7", 3772, 90000000);
-//        final DRPCClient drpcClient2 = new DRPCClient("qp-hd6", 3772, 90000000);
-        long startTime = System.currentTimeMillis();
-        String result = runQuery(args[0], drpcClient1);
-/*
-        new Thread("secondDrpc"){
-            @Override
-            public void run () {
-                try {
-                    String result2 = runQuery(args[0], drpcClient2);
-                    System.out.println(result2);
-                } catch ( TException e ) {
-                    e.printStackTrace(); 
-                } catch ( DRPCExecutionException e ) {
-                    e.printStackTrace();
-                }
-            }
-        }.run();
-*/
-
-
-        long endTime = System.currentTimeMillis();
-        duration += endTime - startTime;
-        System.out.println(result);
-        drpcClient1.close();
-//        drpcClient2.close();
+        final DRPCClient client = new DRPCClient("qp-hd7", 3772, 10000 /*timeout*/);
+        runQuery(args[0], client);
+        client.close();
     }
 
-    private static String runQuery (final String topologyAndDrpcServiceName, final DRPCClient client) throws TException, DRPCExecutionException {/*Query Arguments in order -- marketsegment, orderdate, shipdate*/
-        return client.execute(topologyAndDrpcServiceName, "1080548553,19950315,19950315");
+    private static String runQuery (final String topologyAndDrpcServiceName, final DRPCClient client) throws
+    TException,
+    DRPCExecutionException
+    {
+        return client.execute(topologyAndDrpcServiceName, "Idiot! You don't care what the arguments are :)");
     }
 }
 

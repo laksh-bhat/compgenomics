@@ -29,18 +29,19 @@ import storm.trident.spout.RichSpoutBatchExecutor;
 import storm.trident.tuple.TridentTuple;
 
 public class ErrorCorrectorTopology {
-    public static StormTopology buildTopology (LocalDRPC drpc, String drpcFunction, final ITridentSpout reader,
+    public static StormTopology buildTopology (LocalDRPC drpc, String drpcFunctionName, final ITridentSpout reader,
                                                int readLength)
     {
-        int parallelismHint = 64;
+        int parallelismHint = 32;
         final TridentTopology topology = new TridentTopology();
         final Stream sequenceStream = topology.newStream("sequence-reader", reader);
         final Stream kMerStream = sequenceStream
-		.parallelismHint(1)
-		.shuffle()
+		        .parallelismHint(1)
+		        .shuffle()
                 .each(new Fields("rownum", "read", "quality"), new KmerSplitFilter(), new Fields("kmer", "qmer"))
-		.project(new Fields("rownum", "kmer", "qmer"))
-                .parallelismHint(parallelismHint);
+		        .project(new Fields("rownum", "kmer", "qmer"))
+                .parallelismHint(parallelismHint)
+        ;
 
         final TridentState histogram = kMerStream
                 .parallelismHint(parallelismHint)
@@ -59,7 +60,9 @@ public class ErrorCorrectorTopology {
                 .parallelismHint(parallelismHint)
 	    ;
 
-	Stream drpcStream = topology.newDRPCStream("EC", drpc).parallelismHint(1);
+        // This is cheating. We use the DrpcSpout to invoke correction.
+        // But we are actually supposed to use DRPC for queries!
+	    Stream drpcStream = topology.newDRPCStream(drpcFunctionName, drpc).parallelismHint(1);
 
         // Query the distributed histograms and aggregate.
         Stream combinedHistogram = drpcStream
@@ -87,15 +90,17 @@ public class ErrorCorrectorTopology {
                            new Fields("statistics"))
         ;
 
+        // This is why storm is so cool. When I was struggling to get things going, I came across this multiReduce
+        // which simply allows you to *combine* arbitrary streams.
         topology.multiReduce(combinedHistogram,
                              combinedCounts,
                              new MultiStatsReducer(),
                              new Fields("histogram", "conditionalCounts", "positionalCounts"))
-		        .broadcast()
+		        .broadcast() // This is the key to good performance.
                 .each(new Fields("histogram", "conditionalCounts", "positionalCounts"),
                       new CorrectionFunction(),
                       new Fields("result"))
-         	    .parallelismHint(parallelismHint * 2)
+         	    .parallelismHint(parallelismHint * 2) // Massively parallel; I hope I don't kill poor MySql
         ;
 
         return topology.build();
@@ -119,15 +124,17 @@ public class ErrorCorrectorTopology {
         conf.put("topology.trident.batch.emit.interval.millis", 500);
         conf.put(Config.DRPC_SERVERS, Lists.newArrayList("qp-hd3", "qp-hd4", "qp-hd5", "qp-hd6", "qp-hd7", "qp-hd8", "qp-hd9"));
         conf.put(Config.STORM_CLUSTER_MODE, "distributed");
-//	conf.put(Config.NIMBUS_TASK_TIMEOUT_SECS, 120);
+	    conf.put(Config.NIMBUS_TASK_TIMEOUT_SECS, 120);
+        conf.put(Config.TOPOLOGY_ENABLE_MESSAGE_TIMEOUTS, true);
+        conf.put(Config.DRPC_REQUEST_TIMEOUT_SECS, 1800);
+        conf.put(Config.DRPC_REQUEST_TIMEOUT_SECS, 1800);
 //      conf.put(Config.STORM_ZOOKEEPER_RETRY_INTERVAL, 5000);
 //      conf.put(Config.STORM_ZOOKEEPER_CONNECTION_TIMEOUT, 180000);
 //      onf.put(Config.STORM_ZOOKEEPER_SESSION_TIMEOUT, 150000);
 //      conf.put(Config.STORM_ZOOKEEPER_RETRY_TIMES, 10);
 //      conf.put(Config.TOPOLOGY_ENABLE_MESSAGE_TIMEOUTS, true);
 //      conf.put(Config.TOPOLOGY_MESSAGE_TIMEOUT_SECS, 900);
-        conf.put(Config.DRPC_REQUEST_TIMEOUT_SECS, 1800);
-
+        //conf.put(Config.TOPOLOGY_MESSAGE_TIMEOUT_SECS, 900);
         return conf;
     }
 

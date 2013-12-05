@@ -58,14 +58,14 @@
     <file path="$PROJECT_DIR$/../../BDConsistency/src/jvm/storm/bdconsistency/topology/tpch/Query21Topology.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1384195788905" ignored="false" />
     <file path="$PROJECT_DIR$/../../BDConsistency/src/jvm/storm/bdconsistency/bolt/trident/basefunction/Split.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1384195801292" ignored="false" />
     <file path="/Split.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1384195775701" ignored="false" />
-    <file path="$PROJECT_DIR$/../../BDConsistency/src/jvm/storm/bdconsistency/topology/tpch/Query3Topology.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1386092547589" ignored="false" />
+    <file path="$PROJECT_DIR$/../../BDConsistency/src/jvm/storm/bdconsistency/topology/tpch/Query3Topology.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1386110721869" ignored="false" />
     <file path="/readme.txt" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1384792325157" ignored="false" />
     <file path="/OrfProteinCoder.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1384666605771" ignored="false" />
     <file path="/DrawDeBruijnGraph.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1384733124371" ignored="false" />
     <file path="$PROJECT_DIR$/../../BDConsistency/src/jvm/storm/bdconsistency/topology/finance/AxFinderTransactional.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385347433388" ignored="false" />
     <file path="/NonTransactionalFileStreamingSpout.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385102523360" ignored="false" />
     <file path="/BloomFilter.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385087095272" ignored="false" />
-    <file path="/ErrorCorrectorTopology.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1386091962083" ignored="false" />
+    <file path="/ErrorCorrectorTopology.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1386214918894" ignored="false" />
     <file path="/AbundanceHistogram.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385234849819" ignored="false" />
     <file path="/HistogramUpdater.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1386078942023" ignored="false" />
     <file path="/Test.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385083802558" ignored="false" />
@@ -90,7 +90,7 @@
     <file path="/Dummy.txt" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385889421153" ignored="false" />
     <file path="/TestCorrectors.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385540927306" ignored="false" />
     <file path="$PROJECT_DIR$/../../BDConsistency/src/jvm/storm/bdconsistency/utils/DrpcQueryRunner.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385891773623" ignored="false" />
-    <file path="/DrpcQueryRunner.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1385889462691" ignored="false" />
+    <file path="/DrpcQueryRunner.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1386215080878" ignored="false" />
     <file path="/StatsReducer.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1386092237546" ignored="false" />
     <file path="/Query3Topology.java" changelist="2a57e195-0354-488f-993a-c130ba79c81c" time="1386092500621" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -143,6 +143,7 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint url="file://$PROJECT_DIR$/../src/fileutils/csvCleaner.java" line="25" class="fileutils.csvCleaner" package="fileutils">
         <option name="ENABLED" value="true" />
@@ -175,7 +176,6 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </line_breakpoints>
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -185,10 +185,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ErrorCorrectorTopology.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="ErrorCorrectorTopology.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../src/project/cs439/topology/ErrorCorrectorTopology.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="97" column="56" selection-start="4469" selection-end="4469" vertical-scroll-proportion="0.0">
+            <state line="56" column="67" selection-start="2352" selection-end="2352" vertical-scroll-proportion="-0.8759542">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DrpcQueryRunner.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../src/project/cs439/topology/DrpcQueryRunner.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="30" column="66" selection-start="897" selection-end="897" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -221,10 +230,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CorrectionFunction.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="CorrectionFunction.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/project/cs439/function/CorrectionFunction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="85" column="63" selection-start="4011" selection-end="4011" vertical-scroll-proportion="0.66536206">
+            <state line="104" column="61" selection-start="4787" selection-end="4816" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -276,7 +285,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/../src/project/cs439/test/TestCorrectors.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/query/statisticsQuery.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/spout/SequenceReadStreamingSpout.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/state/HistogramUpdater.java" />
@@ -292,6 +300,7 @@
         <option value="$PROJECT_DIR$/../src/project/cs439/query/StatsReducer.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/query/MultiStatsReducer.java" />
         <option value="$PROJECT_DIR$/../src/project/cs439/topology/ErrorCorrectorTopology.java" />
+        <option value="$PROJECT_DIR$/../src/project/cs439/topology/DrpcQueryRunner.java" />
       </list>
     </option>
   </component>
@@ -325,8 +334,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -358,9 +365,51 @@
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cs439" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="topology" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="compgenomics" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="compgenomics" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cs439" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="compgenomics" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="compgenomics" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -377,12 +426,12 @@
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="MemberChooser.showClasses" value="true" />
     <property name="FullScreen" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -510,19 +559,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -548,6 +584,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -632,8 +681,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1366" height="728" extended-state="0" />
-    <editor active="false" />
+    <frame x="0" y="0" width="1366" height="728" extended-state="1" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -643,16 +692,16 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3222417" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14493865" sideWeight="0.67775834" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14493865" sideWeight="0.67775834" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43781942" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270869" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3222417" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -722,30 +771,9 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$PROJECT_DIR$/../lib/storm-0.8.3-wip3.jar!/storm/trident/operation/ReducerAggregator.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="12" selection-start="245" selection-end="251" vertical-scroll-proportion="-5.44" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/project/cs439/test/TestCorrectors.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="65" selection-start="792" selection-end="910" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/project/cs439/spout/SequenceReadStreamingSpout.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="0" selection-start="880" selection-end="880" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../src/project/cs439/state/StatisticsUpdater.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="93" column="0" selection-start="4102" selection-end="4102" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="93" column="0" selection-start="4102" selection-end="4102" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="jar://Z:/Java/jdk1.7.0_40/src.zip!/java/util/HashMap.java">
@@ -814,16 +842,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../src/project/cs439/topology/ErrorCorrectorTopology.java">
+    <entry file="file://$PROJECT_DIR$/../src/project/cs439/function/CorrectionFunction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="97" column="56" selection-start="4469" selection-end="4469" vertical-scroll-proportion="0.0">
+        <state line="104" column="61" selection-start="4787" selection-end="4816" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../src/project/cs439/function/CorrectionFunction.java">
+    <entry file="jar://$PROJECT_DIR$/../lib/storm-0.8.3-wip3.jar!/backtype/storm/Config.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="85" column="63" selection-start="4011" selection-end="4011" vertical-scroll-proportion="0.66536206">
+        <state line="94" column="35" selection-start="5611" selection-end="5611" vertical-scroll-proportion="-6.8" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../readme.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/project/cs439/topology/DrpcQueryRunner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="66" selection-start="897" selection-end="897" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/project/cs439/topology/ErrorCorrectorTopology.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="56" column="67" selection-start="2352" selection-end="2352" vertical-scroll-proportion="-0.8759542">
           <folding />
         </state>
       </provider>
